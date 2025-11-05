@@ -1,14 +1,14 @@
-package services;
+package com.services;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repositories.ParadaRepository;
+import com.repositories.MonopatinRepository;
 
-@Service
 @AllArgsConstructor
-public class ParadaService {
+@Service
+public class MonopatinService {
 
     @Autowired
-    private final ParadaRepository paradaRepository;
+    private final MonopatinRepository monopatinRepository;
 }

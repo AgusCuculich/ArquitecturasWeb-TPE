@@ -1,6 +1,6 @@
-package repositories;
+package com.repositories;
 
-import entities.Monopatin;
+import com.entities.Monopatin;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

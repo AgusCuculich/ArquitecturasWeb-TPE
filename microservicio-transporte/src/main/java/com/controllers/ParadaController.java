@@ -1,17 +1,16 @@
-package controllers;
-
+package com.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
-import services.MonopatinService;
+import com.services.ParadaService;
 
 @RestController
 @RequiredArgsConstructor
 
-public class MonopatinController {
+public class ParadaController {
 
     @Autowired
-    private final MonopatinService monopatinService;
+    private final ParadaService paradaService;
 
 }
