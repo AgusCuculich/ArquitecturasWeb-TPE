@@ -1,19 +1,17 @@
 package com.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import com.utils.EstadoMonopatin;
 
 @Entity
 @AllArgsConstructor
-@Getter
-@Setter
+@NoArgsConstructor
+@Data
 public class Monopatin {
 
     @Id
-    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long monopatin_id;
 
     @Column

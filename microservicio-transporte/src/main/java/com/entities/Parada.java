@@ -1,22 +1,20 @@
 package com.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @AllArgsConstructor
-@Getter
-@Setter
+@NoArgsConstructor
+@Data
 public class Parada {
 
     @Id
-    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long parada_id;
 
     @Column
+    @JsonProperty("gps")
     private Long GPS;
 }
