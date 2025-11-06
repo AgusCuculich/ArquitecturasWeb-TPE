@@ -1,8 +1,14 @@
 package com.dto;
 
+import com.entity.Account;
 import com.utils.Roles;
 import com.utils.TiposUsuario;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 public class UserDTO {

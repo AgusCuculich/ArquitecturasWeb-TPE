@@ -7,10 +7,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name = "users")
-@Data // <- genera getters, setters, equals, hashCode, toString
-@NoArgsConstructor // <- constructor vacío obligatorio
+@Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class User {
     @Id
@@ -26,6 +28,17 @@ public class User {
     private Roles rol;
     @Column
     private TiposUsuario tipo;
+
+
+    @ManyToMany
+    @JoinTable(
+            name = "usuario_account",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "account_id")
+    )
+    private List<Account> accounts;
+
+
 
     public void setName(String name) {
         this.name = name;
