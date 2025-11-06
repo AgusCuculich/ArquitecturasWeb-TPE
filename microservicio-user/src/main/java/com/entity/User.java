@@ -1,5 +1,7 @@
 package com.entity;
 
+import com.utils.Roles;
+import com.utils.TiposUsuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,4 +22,28 @@ public class User {
     private String surname;
     @Column
     private Long mobile;
+    @Column
+    private Roles rol;
+    @Column
+    private TiposUsuario tipo;
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public void setMobile(Long mobile) {
+        this.mobile = mobile;
+    }
+
+    public void setRol(Roles rol) {
+        this.rol = rol;
+    }
+
+    public void setTipo(TiposUsuario tipo) {
+        this.tipo = tipo;
+    }
 }
