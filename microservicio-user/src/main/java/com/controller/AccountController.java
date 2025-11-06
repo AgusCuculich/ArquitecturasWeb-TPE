@@ -16,7 +16,6 @@ import java.util.Optional;
 public class AccountController {
     private final AccountService service;
 
-
     @GetMapping
     public List<AccountDTO> getAll(){
         return service.getAll();

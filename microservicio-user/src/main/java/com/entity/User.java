@@ -28,8 +28,6 @@ public class User {
     private Roles rol;
     @Column
     private TiposUsuario tipo;
-
-
     @ManyToMany
     @JoinTable(
             name = "usuario_account",
@@ -37,8 +35,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "account_id")
     )
     private List<Account> accounts;
-
-
 
     public void setName(String name) {
         this.name = name;
