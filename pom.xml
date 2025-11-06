@@ -11,6 +11,7 @@
     <modules>
         <module>microservicio-user</module>
         <module>microservicio-transporte</module>
+        <module>microservicio-mantenimiento</module>
     </modules>
 
     <properties>
