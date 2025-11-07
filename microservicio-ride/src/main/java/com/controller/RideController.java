@@ -1,6 +1,7 @@
 package com.controller;
 
 import com.dto.RideDTO;
+import com.entity.Ride;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

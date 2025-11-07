@@ -15,6 +15,10 @@ import java.util.stream.Collectors;
 public class RideService {
     private final RideRepository repo;
 
+    public List<Ride> getAllRidesDebug(){
+        return repo.findAll();
+    }
+
     public List<RideDTO> getAllRides() {
         return repo.findAll()
                 .stream()
