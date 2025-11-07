@@ -1,35 +1,35 @@
 package com.controller;
 
-import com.dto.UserDTO;
-import com.entity.User;
+import com.dto.AccountDTO;
+import com.entity.Account;
+import com.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import com.service.UserService;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/accounts")
 @RequiredArgsConstructor
-public class UserController {
-    private final UserService service;
+public class AccountController {
+    private final AccountService service;
 
     @GetMapping
-    public List<UserDTO> getAll() {
+    public List<AccountDTO> getAll(){
         return service.getAll();
     }
 
     @GetMapping("/{id}")
-    public Optional<UserDTO> getById(@PathVariable("id") Long id){
+    public Optional<AccountDTO> getById(@PathVariable("id") Long id){
         return service.fetchById(id);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public void save(@RequestBody User user) {
-        service.save(user);
+    public void save (@RequestBody Account account){
+        service.save(account);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -38,8 +38,4 @@ public class UserController {
         service.delete(id);
     }
 
-    @PutMapping("/{id}")
-    public void update(@PathVariable("id") Long id, @RequestBody User usuarioActualizado){
-        service.update(id,usuarioActualizado);
-    }
 }
