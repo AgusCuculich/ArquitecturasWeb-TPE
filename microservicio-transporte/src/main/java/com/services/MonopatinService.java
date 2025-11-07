@@ -2,6 +2,7 @@ package com.services;
 
 import com.dtos.MonopatinDTO;
 import com.entities.Monopatin;
+import com.utils.EstadoMonopatin;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,4 +34,15 @@ public class MonopatinService {
     public MonopatinDTO getMonopatinById(Long id){
         return monopatinRepository.getMonopatinByMonopatin_id(id);
     }
+
+    public void actualizarEstado(Long id, EstadoMonopatin estado) {
+
+        Monopatin mono = monopatinRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Monopatín no encontrado"));
+
+        mono.setEstado(estado);
+        monopatinRepository.save(mono);
+    }
+
+
 }

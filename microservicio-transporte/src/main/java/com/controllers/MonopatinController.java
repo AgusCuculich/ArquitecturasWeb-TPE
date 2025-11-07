@@ -4,6 +4,7 @@ package com.controllers;
 import com.dtos.MonopatinDTO;
 import com.entities.Monopatin;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.utils.EstadoMonopatin;
 import jakarta.servlet.http.PushBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,14 @@ public class MonopatinController {
     public MonopatinDTO ubicarMonopatinEnParada(@PathVariable("id")long id, @PathVariable("parada_id")long parada_id){
         return monopatinService.ubicarMonopatinEnParada(id,parada_id);
     }
+
+    @PutMapping("/{id}/estado")
+    public void actualizarEstado(@PathVariable("id") Long id, @RequestParam("estado") EstadoMonopatin estado) {
+        monopatinService.actualizarEstado(id, estado);
+    }
+
+
+
+
 
 }

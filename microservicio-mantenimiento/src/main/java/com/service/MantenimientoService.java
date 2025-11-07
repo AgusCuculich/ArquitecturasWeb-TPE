@@ -1,32 +1,36 @@
 package com.service;
 
+
+import com.client.TransporteClient;
 import com.dto.MantenimientoDTO;
-import com.entities.Monopatin;
+
 import com.entity.Mantenimiento;
-import com.repositories.MonopatinRepository;
+
 import com.repository.MantenimientoRepository;
-import com.utils.EstadoMonopatin;
+
 import lombok.AllArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.utils.EstadoMonopatin.MANTENIMIENTO;
 
 @Service
 @AllArgsConstructor
 public class MantenimientoService {
 
+
     private final MantenimientoRepository mantenimientoRepository;
-    private final MonopatinRepository monopatinRepository;
 
+    private final TransporteClient transporteClient; // <— usamos el componente
 
-    /*
     public Mantenimiento registrarMantenimiento(MantenimientoDTO dto) {
-        Monopatin monopatin = monopatinRepository.findById(dto.getMonopatin_id())
-                .orElseThrow(() -> new RuntimeException("Monopatín no encontrado"));
 
-        monopatin.setEstado(EstadoMonopatin.MANTENIMIENTO);
-        monopatinRepository.save(monopatin);
-
+        // 1) Cambiar el estado del monopatín en el microservicio de transporte
+        transporteClient.actualizarEstadoMonopatin(dto.getMonopatin_id(), MANTENIMIENTO);
+     
+        // 2) Guardar mantenimiento en BD local
         Mantenimiento mantenimiento = new Mantenimiento();
         mantenimiento.setFecha_inicio(dto.getFecha_inicio());
         mantenimiento.setFecha_fin(dto.getFecha_fin());
@@ -35,8 +39,6 @@ public class MantenimientoService {
 
         return mantenimientoRepository.save(mantenimiento);
     }
-
-     */
 
     public List<MantenimientoDTO> listarMantenimientos() {
         return mantenimientoRepository.getAllMantenimientos();

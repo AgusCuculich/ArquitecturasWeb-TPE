@@ -21,11 +21,9 @@ public class MantenimientoController {
     }
 
 
-    /* esto hay que hacerlo con las llamadas a la api
     @PostMapping("/registrar")
     public Mantenimiento registrar(@RequestBody MantenimientoDTO dto) {
         return mantenimientoService.registrarMantenimiento(dto);
     }
 
-     */
 }
