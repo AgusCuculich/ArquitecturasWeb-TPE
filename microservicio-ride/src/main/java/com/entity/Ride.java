@@ -1,10 +1,7 @@
 package com.entity;
 
 import com.mongodb.lang.Nullable;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -16,10 +13,11 @@ import java.util.Date;
 @Setter
 @ToString
 @AllArgsConstructor
+@NoArgsConstructor
 @Document
 public class Ride {
     @Id
-    private Long id;
+    private String id;
 
     @Field("start_date")
     private Date startDate;
