@@ -1,14 +1,17 @@
 package com.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Date;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class AccountDTO {
-    private final String tipo;
-    private final Date fecha_alta;
-    private final float saldo;
+    private String tipo;
+    private Date fecha_alta;
+    private float saldo;
 
     public String getTipo() {
         return tipo;

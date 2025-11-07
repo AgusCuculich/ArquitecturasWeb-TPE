@@ -6,43 +6,29 @@ import com.utils.TiposUsuario;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
-@RequiredArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+
 public class UserDTO {
-    private final String name;
-    private final String username;
-    private final Long mobile;
-    private final Roles rol;
-    private final TiposUsuario tipo;
+    private String name;
+    private String surname;
+    private Long mobile;
+    private Roles rol;
+    private TiposUsuario tipo;
 
-    public String getName() {
-        return name;
-    }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public Long getMobile() {
-        return mobile;
-    }
-
-    public Roles getRol() {
-        return rol;
-    }
-
-    public TiposUsuario getTipo() {
-        return tipo;
-    }
 
     @Override
     public String toString() {
         return "UserDTO{" +
                 "name='" + name + '\'' +
-                ", username='" + username + '\'' +
+                ", surname='" + surname + '\'' +
                 ", mobile=" + mobile +
                 ", rol=" + rol +
                 ", tipo=" + tipo +

@@ -28,7 +28,7 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public void save(@RequestBody User user) {
+    public void save(@RequestBody UserDTO user) {
         service.save(user);
     }
 
@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public void update(@PathVariable("id") Long id, @RequestBody User usuarioActualizado){
+    public void update(@PathVariable("id") Long id, @RequestBody UserDTO usuarioActualizado){
         service.update(id,usuarioActualizado);
     }
 }

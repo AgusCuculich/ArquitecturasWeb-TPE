@@ -28,7 +28,7 @@ public class AccountController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public void save (@RequestBody Account account){
+    public void save (@RequestBody AccountDTO account){
         service.save(account);
     }
 
@@ -38,4 +38,8 @@ public class AccountController {
         service.delete(id);
     }
 
+    @PutMapping("/{id}")
+    public void update(@PathVariable("id") Long id, @RequestBody AccountDTO account){
+        service.update(id,account);
+    }
 }
