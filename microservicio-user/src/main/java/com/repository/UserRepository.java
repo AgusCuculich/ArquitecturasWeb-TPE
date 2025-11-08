@@ -14,10 +14,10 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User,Long> {
 
     // Devolver listado DTO de todos los usuarios
-    @Query("SELECT new com.dto.UserDTO(u.name, u.surname, u.mobile) FROM User u")
-    List<UserDTO> findAllDTO();
+    @Query("SELECT new com.dto.UserDTO(u.name, u.surname, u.mobile, u.rol, u.tipo) FROM User u")
+    List<UserDTO> getAll();
 
     // Devuelve DTO del usuario cuyo id coincida
-    @Query("SELECT new com.dto.UserDTO(u.name, u.surname, u.mobile) FROM User u WHERE u.id = :id")
-    Optional<UserDTO> findDTOByUserId(@Param("id") Long id);
+    @Query("SELECT new com.dto.UserDTO(u.name, u.surname, u.mobile, u.rol, u.tipo) FROM User u WHERE u.id = :id")
+    Optional<UserDTO> fetchById(@Param("id") Long id);
 }

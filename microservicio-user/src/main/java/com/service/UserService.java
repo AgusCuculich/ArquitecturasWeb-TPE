@@ -14,23 +14,44 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository repo;
 
-    public void save(User user) {
+    public void saveDebug(User user) {
         repo.save(user);
     }
 
-    public void delete(User user) {
-        repo.delete(user);
-    }
+    public void save(UserDTO dto){
+        User user = new User();
 
-    public List<UserDTO> findAll() {
-        return repo.findAllDTO();
-    }
+        user.setName(dto.getName());
+        user.setSurname(dto.getSurname());
+        user.setMobile(dto.getMobile());
+        user.setRol(dto.getRol());
+        user.setTipo(dto.getTipo());
 
-    public Optional<UserDTO> findById(Long id) {
-        return repo.findDTOByUserId(id);
-    }
-
-    public void update(User user) {
         repo.save(user);
+    }
+
+    public void delete(Long id) {
+        repo.deleteById(id);
+    }
+
+    public List<UserDTO> getAll() {
+        return repo.getAll();
+    }
+
+    public Optional<UserDTO> fetchById(Long id) {
+        return repo.fetchById(id);
+    }
+
+    public void update(Long id, UserDTO updatedUser) {
+        User existingUser = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("No existe el usuario con el id: " + id));
+
+        if(updatedUser.getName() != null) existingUser.setName(updatedUser.getName());
+        if(updatedUser.getSurname() != null) existingUser.setSurname(updatedUser.getSurname());
+        if(updatedUser.getMobile() != null) existingUser.setMobile(updatedUser.getMobile());
+        if(updatedUser.getRol() != null) existingUser.setRol(updatedUser.getRol());
+        if(updatedUser.getTipo() != null) existingUser.setTipo(updatedUser.getTipo());
+
+        repo.save(existingUser);
     }
 }
