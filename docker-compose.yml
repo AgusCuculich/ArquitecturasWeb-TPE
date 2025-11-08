@@ -1,5 +1,7 @@
 version: '3.8'
+
 services:
+  # MongoDB para servicio de viajes
   mongodb:
     image: mongo:6.0
     container_name: mongo_rides
@@ -10,5 +12,20 @@ services:
     volumes:
       - mongo_data:/data/db
 
+  # MySQL para servicio de usuarios
+  mysql_user:
+    image: mysql:8.0
+    container_name: mysql_user
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: user_db
+    volumes:
+      - mysql_data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+
 volumes:
   mongo_data:
+  mysql_data:
