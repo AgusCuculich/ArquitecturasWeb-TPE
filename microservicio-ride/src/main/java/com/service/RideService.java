@@ -1,5 +1,6 @@
 package com.service;
 
+import com.dto.RideCountResult;
 import com.dto.RideDTO;
 import com.entity.Ride;
 import lombok.RequiredArgsConstructor;
@@ -75,5 +76,9 @@ public class RideService {
         if(updatedRide.getIdScooter() != null) existingRide.setIdScooter(updatedRide.getIdScooter());
 
         repo.save(existingRide);
+    }
+
+    public List<RideCountResult> findMonopatinesConMasViajesEnAnio(int anio, int x) {
+        return repo.findMonopatinesConMasViajesEnAnio(anio, x);
     }
 }

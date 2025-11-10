@@ -1,5 +1,6 @@
 package com.controller;
 
+import com.dto.RideCountResult;
 import com.dto.RideDTO;
 import com.entity.Ride;
 import lombok.RequiredArgsConstructor;
@@ -37,4 +38,11 @@ public class RideController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void updateRide(@PathVariable("id") String id, @RequestBody RideDTO updatedRide) {service.updateRide(id, updatedRide);}
+
+    @GetMapping("/stats")
+    public List<RideCountResult> getMonopatinesConMasViajes(
+            @RequestParam("anio") int anio,
+            @RequestParam("viajes") int viajes) {
+        return service.findMonopatinesConMasViajesEnAnio(anio, viajes);
+    }
 }
