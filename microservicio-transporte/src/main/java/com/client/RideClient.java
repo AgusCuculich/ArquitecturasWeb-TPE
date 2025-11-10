@@ -1,20 +1,23 @@
 package com.client;
 
+import com.dtos.ReporteMonopatinesDTO;
 import com.utils.EstadoMonopatin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
-public class TransporteClient {
+public class RideClient {
 
     private final RestTemplate restTemplate;
 
-    public void actualizarEstadoMonopatin(Long monopatinId, EstadoMonopatin estado) {
+    public List<ReporteMonopatinesDTO> generarReporte() {
 
-        String url = "http://localhost:8081/monopatines/{id}/estado?estado={estado}";
+        String url = "http://localhost:8082/monopatines/{id}/estado?estado={estado}";
 
         restTemplate.exchange(
                 url,

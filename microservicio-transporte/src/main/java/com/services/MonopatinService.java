@@ -14,6 +14,13 @@ public class MonopatinService {
 
     private final MonopatinRepository monopatinRepository;
 
+       /*
+    Como administrador quiero poder generar un reporte de uso de monopatines por kilómetros
+para establecer si un monopatín requiere de mantenimiento. Este reporte debe poder
+configurarse para incluir (o no) los tiempos de pausa.
+     */
+
+
     public void saveMonopatin(Monopatin monopatin){
         monopatinRepository.save(monopatin);
     }
