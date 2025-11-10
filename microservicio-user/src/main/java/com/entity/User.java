@@ -28,6 +28,8 @@ public class User {
     private Roles rol;
     @Column
     private TiposUsuario tipo;
+    @Column(columnDefinition = "boolean default false")
+    private boolean isDisabled = false;
     @ManyToMany
     @JoinTable(
             name = "usuario_account",
@@ -54,5 +56,9 @@ public class User {
 
     public void setTipo(TiposUsuario tipo) {
         this.tipo = tipo;
+    }
+
+    public void setDisabled(boolean isDisabled) {
+        this.isDisabled = isDisabled;
     }
 }

@@ -42,4 +42,7 @@ public class UserController {
     public void update(@PathVariable("id") Long id, @RequestBody UserDTO usuarioActualizado){
         service.update(id,usuarioActualizado);
     }
+
+    @PutMapping("/disable/{id}")
+    public void disableUser(@PathVariable("id") Long id) {service.disableUser(id);}
 }
