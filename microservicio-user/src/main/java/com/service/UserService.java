@@ -102,6 +102,14 @@ public class UserService {
         repo.save(existingUser);
     }
 
+    public void disableUser(Long id){
+        User user = repo.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Cuenta no encontrada con id: " + id));
+        user.setDisabled(true);
+        System.out.println(user);
+        repo.save(user);
+    }
+
     public List<Long> getOtherUsers(Long userId) {
         return repo.findOtherUsers(userId);
     }

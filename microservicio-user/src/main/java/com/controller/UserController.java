@@ -61,6 +61,9 @@ public class UserController {
         service.update(id,usuarioActualizado);
     }
 
+    @PutMapping("/disable/{id}")
+    public void disableUser(@PathVariable("id") Long id) {service.disableUser(id);}
+
     @GetMapping("/accounts/{userId}")
     public List<Long> getOtherUsers(@PathVariable("userId") Long userId) {
         return service.getOtherUsers(userId);
