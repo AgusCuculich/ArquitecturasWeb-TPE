@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-
+@RequiredArgsConstructor
 public class TransporteClient {
 
     private final RestTemplate restTemplate;

@@ -23,4 +23,5 @@ public class ReporteMonopatinesDTO {
     }
 
     */
+    private String tiempoPausa;
 }

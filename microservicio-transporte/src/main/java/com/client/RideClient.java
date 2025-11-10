@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 @Component
-
+@RequiredArgsConstructor
 public class RideClient {
 
     private final RestTemplate restTemplate;
@@ -22,14 +22,13 @@ public class RideClient {
         this.restTemplate = restTemplate;
     }
 
+
     public List<ReporteMonopatinesDTO> obtenerReporte(Date inicio, Date fin, boolean incluirPausas) {
         String url = String.format(
                 "http://localhost:8089/rides/reporte?inicio=%tF&fin=%tF&incluirPausas=%b",
                 inicio, fin, incluirPausas
         );
-
         ReporteMonopatinesDTO[] response = restTemplate.getForObject(url, ReporteMonopatinesDTO[].class);
         return Arrays.asList(response);
     }
-
 }
