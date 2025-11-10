@@ -1,6 +1,8 @@
 package com.services;
 
+import com.client.RideClient;
 import com.dtos.MonopatinDTO;
+import com.dtos.ReporteMonopatinesDTO;
 import com.entities.Monopatin;
 import com.utils.EstadoMonopatin;
 import lombok.AllArgsConstructor;
@@ -8,18 +10,48 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.repositories.MonopatinRepository;
 
+import java.util.Date;
+import java.util.List;
+
 @AllArgsConstructor
 @Service
 public class MonopatinService {
 
     private final MonopatinRepository monopatinRepository;
 
-       /*
-    Como administrador quiero poder generar un reporte de uso de monopatines por kilómetros
-para establecer si un monopatín requiere de mantenimiento. Este reporte debe poder
-configurarse para incluir (o no) los tiempos de pausa.
-     */
+    private final RideClient rideClient;
 
+    public List<ReporteMonopatinesDTO> generarReporteMonopatines(Date inicio, Date fin, boolean incluirPausas) {
+
+        // 1) Llamamos al servicio de rides
+        List<ReporteMonopatinesDTO> reporteRides = rideClient.obtenerReporte(
+                // Puedes usar SimpleDateFormat si hace falta
+                inicio,
+                fin,
+                incluirPausas
+        );
+
+        // 2) Traemos los monopatines que ya están en mantenimiento
+        List<Long> idsEnMantenimiento = monopatinRepository.findIdsEnMantenimiento();
+
+        // 3) Filtramos para excluir esos monopatines
+        List<ReporteMonopatinesDTO> filtrado = reporteRides.stream()
+                .filter(r -> !idsEnMantenimiento.contains(r.getIdMonopatin()))
+                .toList();
+
+        // 4) Convertimos a ReporteMonopatinesDTO
+        return reporteRides.stream()
+                .filter(r -> !idsEnMantenimiento.contains(r.getIdMonopatin()))
+                .map(r -> {
+                    ReporteMonopatinesDTO dto = new ReporteMonopatinesDTO();
+                    dto.setIdMonopatin(r.getIdMonopatin());
+                    dto.setKilometrosRecorridos(r.getKilometrosRecorridos());
+                    dto.setRequiereMantenimiento(r.getKilometrosRecorridos()>= 100 ? "SI" : "NO");
+                    dto.setTiempoPausa(incluirPausas ? r.getTiempoPausa(): null);
+                    return dto;
+                })
+                .toList();
+    }
 
     public void saveMonopatin(Monopatin monopatin){
         monopatinRepository.save(monopatin);
