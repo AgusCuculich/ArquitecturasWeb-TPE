@@ -1,5 +1,7 @@
 package com.service;
 
+import com.dto.ReporteDTO;
+import com.dto.ReporteProjection;
 import com.client.UserClient;
 import com.dto.ReporteDTO;
 import com.dto.ReporteProjection;

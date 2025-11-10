@@ -1,6 +1,7 @@
 package com.repository;
 
 import com.dto.ReporteProjection;
+import com.dto.ReporteProjection;
 import com.dto.UsuarioViajeCountDTO;
 import com.entity.Ride;
 import org.springframework.data.mongodb.repository.Aggregation;
