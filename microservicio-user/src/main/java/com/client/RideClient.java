@@ -1,5 +1,6 @@
 package com.client;
 
+import com.dto.ReporteTarifaDTO;
 import com.dto.UsuarioViajeCountDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -23,5 +24,20 @@ public class RideClient {
 
         UsuarioViajeCountDTO[] response = restTemplate.getForObject(url, UsuarioViajeCountDTO[].class);
         return Arrays.asList(response);
+    }
+
+    public ReporteTarifaDTO reporteTarifas(Date desde, Date hasta){
+        String url = String.format(
+                "http://localhost:8089/rides/totalFacturado?inicio=%tF&fin=%tF",
+                desde,hasta
+        );
+        ReporteTarifaDTO respuestaFee = restTemplate.getForObject(url, ReporteTarifaDTO.class);
+
+        if (respuestaFee != null) {
+
+            return respuestaFee;
+        }
+
+        return null;
     }
 }

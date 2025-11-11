@@ -1,6 +1,7 @@
 package com.service;
 
 import com.client.RideClient;
+import com.dto.ReporteTarifaDTO;
 import com.dto.UserDTO;
 import com.dto.UsuarioViajeCountDTO;
 import com.entity.User;
@@ -54,6 +55,12 @@ public class UserService {
             );
         }).toList();
     }
+
+    public ReporteTarifaDTO getReporteTarifas(Date desde, Date hasta) {
+
+        return rideClient.reporteTarifas(desde, hasta);
+    }
+
 
 
 

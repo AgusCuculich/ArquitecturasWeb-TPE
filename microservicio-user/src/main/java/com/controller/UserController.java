@@ -1,5 +1,6 @@
 package com.controller;
 
+import com.dto.ReporteTarifaDTO;
 import com.dto.UserDTO;
 import com.dto.UsuarioViajeCountDTO;
 import com.entity.User;
@@ -19,7 +20,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService service;
-
 
     @GetMapping
     public List<UserDTO> getAll() {
@@ -44,6 +44,17 @@ public class UserController {
     ) {
         return service.rankingPorPeriodoYRol(desde, hasta, rol);
     }
+
+    @GetMapping("/reporte-tarifas")
+    @ResponseStatus(HttpStatus.OK)
+    public ReporteTarifaDTO getReporteTarifas(
+            @RequestParam("desde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date desde,
+            @RequestParam("hasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date hasta
+    ) {
+        // Llama al nuevo método del servicio
+        return service.getReporteTarifas(desde, hasta);
+    }
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public void save(@RequestBody UserDTO user) {
@@ -75,7 +86,5 @@ public class UserController {
             @PathVariable("accountId") Long accountId) {
         service.linkAccount(userId, accountId);
     }
-
-
 
 }
