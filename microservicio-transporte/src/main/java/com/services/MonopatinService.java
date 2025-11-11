@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.repositories.MonopatinRepository;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -83,5 +84,17 @@ public class MonopatinService {
         monopatinRepository.save(mono);
     }
 
+    public List<MonopatinDTO> getScooterStats(int anio, int viajes) {
+        List<Long> ids = rideClient.getScooterStats(anio, viajes);
+        List<Monopatin> scooterFiltrados = monopatinRepository.findAllById(ids);
+
+        List<MonopatinDTO> monopatinesDTO =  new ArrayList<>();
+        for(Monopatin monopatin : scooterFiltrados){
+            MonopatinDTO dto = new MonopatinDTO(monopatin.getParada_id(), monopatin.getEstado());
+            monopatinesDTO.add(dto);
+        }
+
+        return monopatinesDTO;
+    }
 
 }

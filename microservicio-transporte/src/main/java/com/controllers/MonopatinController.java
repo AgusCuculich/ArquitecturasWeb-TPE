@@ -58,7 +58,12 @@ public class MonopatinController {
         monopatinService.actualizarEstado(id, estado);
     }
 
-
+    @GetMapping("/stats")
+    public List<MonopatinDTO> getMonopatinesConMasViajes(
+            @RequestParam("anio") int anio,
+            @RequestParam("viajes") int viajes) {
+        return monopatinService.getScooterStats(anio, viajes);
+    }
 
 
 
