@@ -1,5 +1,6 @@
 package com.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,6 +28,7 @@ public class Account {
     private float saldo;
 
     @ManyToMany(mappedBy = "accounts")
+    @JsonBackReference
     private List<User> usuarios;
 
     public String getTipo() {

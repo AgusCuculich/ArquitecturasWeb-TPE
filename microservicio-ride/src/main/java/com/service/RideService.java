@@ -1,8 +1,10 @@
 package com.service;
 
+import com.client.UserClient;
 import com.dto.ReporteDTO;
 import com.dto.ReporteProjection;
 import com.dto.RideDTO;
+import com.dto.ScootersUseDTO;
 import com.dto.UsuarioViajeCountDTO;
 import com.entity.Ride;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,7 @@ import com.repository.RideRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +22,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RideService {
     private final RideRepository repo;
+    private final UserClient client;
 
     public List<Ride> getAllRidesDebug(){
         return repo.findAll();
@@ -80,6 +84,13 @@ public class RideService {
         if(updatedRide.getIdScooter() != null) existingRide.setIdScooter(updatedRide.getIdScooter());
 
         repo.save(existingRide);
+    }
+
+    public ScootersUseDTO getScootersUseByUser(Long idUser, Date startDate, Date endDate) {
+        long rideCount = repo.countByIdUserAndStartDateBetween(idUser, startDate, endDate);
+        List<Long> otherUsers = client.getOtherUsers(idUser);
+        List<Long> activeUsers = repo.findDistinctUserIdsWithRides(otherUsers, startDate, endDate);
+        return new ScootersUseDTO(idUser, rideCount, activeUsers);
     }
 
     public List<ReporteDTO> generarReporte(Date inicio, Date fin, boolean incluirPausas) {

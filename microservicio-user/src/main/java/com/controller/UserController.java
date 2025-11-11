@@ -20,9 +20,15 @@ import java.util.Optional;
 public class UserController {
     private final UserService service;
 
+
     @GetMapping
     public List<UserDTO> getAll() {
         return service.getAll();
+    }
+
+    @GetMapping("/debug")
+    public List<User> getAllDEBUG() {
+        return service.getAllDebug();
     }
 
     @GetMapping("/{id}")
@@ -54,4 +60,19 @@ public class UserController {
     public void update(@PathVariable("id") Long id, @RequestBody UserDTO usuarioActualizado){
         service.update(id,usuarioActualizado);
     }
+
+    @GetMapping("/accounts/{userId}")
+    public List<Long> getOtherUsers(@PathVariable("userId") Long userId) {
+        return service.getOtherUsers(userId);
+    }
+
+    @PostMapping("/{userId}/linkAccount/{accountId}")
+    public void linkAccount(
+            @PathVariable("userId") Long userId,
+            @PathVariable("accountId") Long accountId) {
+        service.linkAccount(userId, accountId);
+    }
+
+
+
 }
