@@ -8,6 +8,7 @@ import com.repository.RideRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -40,6 +41,16 @@ public class FeeService {
                         fee.getStartDate(),
                         fee.getEndDate()
                 ));
+    }
+
+    public FeeDTO totalFacturado(Date inicio, Date fin){
+
+        List<Fee> facturas = repo.totalFacturado(inicio, fin);
+
+        Double sumaTotal = facturas.stream()
+                .mapToDouble(Fee::getPrice)
+                .sum();
+        return new FeeDTO(sumaTotal, inicio, fin);
     }
 
     public void saveFee(FeeDTO dto){
