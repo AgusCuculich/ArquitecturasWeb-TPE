@@ -1,12 +1,16 @@
 package com.service;
 
 import com.dto.RideCountResult;
+import com.dto.ReporteDTO;
+import com.dto.ReporteProjection;
 import com.dto.RideDTO;
 import com.entity.Ride;
 import lombok.RequiredArgsConstructor;
 import com.repository.RideRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -81,4 +85,31 @@ public class RideService {
     public List<RideCountResult> findMonopatinesConMasViajesEnAnio(int anio, int x) {
         return repo.findMonopatinesConMasViajesEnAnio(anio, x);
     }
+
+    public List<ReporteDTO> generarReporte(Date inicio, Date fin, boolean incluirPausas) {
+
+        List<ReporteProjection> resultados = incluirPausas
+                ? repo.obtenerReporteConPausa(inicio, fin)
+                : repo.obtenerReporteSinPausa(inicio, fin);
+
+        return resultados.stream().map(r -> {
+
+            ReporteDTO dto = new ReporteDTO();
+            dto.setIdmonopatin(r.getIdScooter());
+            dto.setKilometros(r.getTotalKilometros());
+
+            if (incluirPausas && r.getPausas() != null) {
+                LocalTime pauseSum = r.getPausas().stream()
+                        .reduce(LocalTime.of(0,0), (a,b) ->
+                                a.plusHours(b.getHour()).plusMinutes(b.getMinute()).plusSeconds(b.getSecond()));
+                dto.setPausa(pauseSum);
+            } else {
+                dto.setPausa(LocalTime.of(0,0));
+            }
+
+            return dto;
+
+        }).toList();
+    }
+
 }
