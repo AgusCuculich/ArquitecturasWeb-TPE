@@ -27,6 +27,12 @@ public class AccountService {
         repo.deleteById(id);
     }
 
+
+
+    public List<Account> getAllDebug() {
+        return repo.findAll();
+    }
+
     public List<AccountDTO> getAll() {
         return repo.getAll();
     }
