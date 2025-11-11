@@ -3,6 +3,7 @@ package com.service;
 import com.dto.ReporteDTO;
 import com.dto.ReporteProjection;
 import com.dto.RideDTO;
+import com.dto.UsuarioViajeCountDTO;
 import com.entity.Ride;
 import lombok.RequiredArgsConstructor;
 import com.repository.RideRepository;
@@ -105,6 +106,10 @@ public class RideService {
             return dto;
 
         }).toList();
+    }
+
+    public List<UsuarioViajeCountDTO> getUsuariosConCantidadDeViajes(Date desde, Date hasta) {
+        return repo.contarViajesPorUsuario(desde, hasta);
     }
 
 }
