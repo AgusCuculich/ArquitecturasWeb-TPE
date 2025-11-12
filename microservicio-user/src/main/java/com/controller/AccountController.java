@@ -16,6 +16,11 @@ import java.util.Optional;
 public class AccountController {
     private final AccountService service;
 
+    @GetMapping("/debug")
+    public List<Account> getAllDEBUG(){
+        return service.getAllDebug();
+    }
+
     @GetMapping
     public List<AccountDTO> getAll(){
         return service.getAll();

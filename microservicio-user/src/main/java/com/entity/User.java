@@ -1,5 +1,6 @@
 package com.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.utils.Roles;
 import com.utils.TiposUsuario;
 import jakarta.persistence.*;
@@ -36,6 +37,7 @@ public class User {
             joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "account_id")
     )
+    @JsonManagedReference
     private List<Account> accounts;
 
     public void setName(String name) {

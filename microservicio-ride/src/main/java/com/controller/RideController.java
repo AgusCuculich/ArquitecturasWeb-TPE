@@ -3,6 +3,7 @@ package com.controller;
 import com.dto.RideCountResult;
 import com.dto.ReporteDTO;
 import com.dto.RideDTO;
+import com.dto.ScootersUseDTO;
 import com.entity.Ride;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -59,4 +60,16 @@ public class RideController {
             @RequestParam("viajes") int viajes) {
         return service.findMonopatinesConMasViajesEnAnio(anio, viajes);
     }
+
+
+    @GetMapping("/scooterUse/{userId}")
+    public ScootersUseDTO getScooterUse(
+            @PathVariable("userId") Long userId,
+            @RequestParam(name = "startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+            @RequestParam(name = "endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate) {
+
+        return service.getScootersUseByUser(userId, startDate, endDate);
+    }
+
+
 }

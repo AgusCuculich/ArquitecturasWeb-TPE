@@ -37,6 +37,9 @@ public class UserService {
     public List<UserDTO> getAll() {
         return repo.getAll();
     }
+    public List<User> getAllDebug() {
+        return repo.findAll();
+    }
 
     public Optional<UserDTO> fetchById(Long id) {
         return repo.fetchById(id);
@@ -62,4 +65,13 @@ public class UserService {
         System.out.println(user);
         repo.save(user);
     }
+
+    public List<Long> getOtherUsers(Long userId) {
+        return repo.findOtherUsers(userId);
+    }
+
+    public void linkAccount(Long userId, Long accountId) {
+        repo.linkAccount(userId, accountId);
+    }
+
 }

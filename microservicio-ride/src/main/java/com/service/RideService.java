@@ -3,7 +3,9 @@ package com.service;
 import com.dto.RideCountResult;
 import com.dto.ReporteDTO;
 import com.dto.ReporteProjection;
+import com.client.UserClient;
 import com.dto.RideDTO;
+import com.dto.ScootersUseDTO;
 import com.entity.Ride;
 import lombok.RequiredArgsConstructor;
 import com.repository.RideRepository;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -19,6 +22,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RideService {
     private final RideRepository repo;
+    private final UserClient client;
 
     public List<Ride> getAllRidesDebug(){
         return repo.findAll();
@@ -112,4 +116,22 @@ public class RideService {
         }).toList();
     }
 
+
+    public ScootersUseDTO getScootersUseByUser(Long idUser, Date startDate, Date endDate) {
+        long rideCount = repo.countByIdUserAndStartDateBetween(idUser, startDate, endDate);
+        List<Long> otherUsers = client.getOtherUsers(idUser);
+        List<Long> activeUsers = new ArrayList<>();
+
+        for(Long user : otherUsers) {
+            // buscar si viajo entre las fechas de interes
+            long userRideCount = repo.countByIdUserAndStartDateBetween(user, startDate, endDate);
+
+            // agregarlo a una lista (activeUsers) si es el caso
+            if(userRideCount > 0) {
+                activeUsers.add(user);
+            }
+        }
+
+        return new ScootersUseDTO(idUser, rideCount, activeUsers);
+    }
 }
