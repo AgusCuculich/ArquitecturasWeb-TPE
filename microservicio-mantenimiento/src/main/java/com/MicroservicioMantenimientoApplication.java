@@ -12,7 +12,7 @@ public class MicroservicioMantenimientoApplication {
         SpringApplication.run(MicroservicioMantenimientoApplication.class, args);
     }
     @Bean
-    public RestTemplate restTemplate() {
+    public RestTemplate restTemplateMantenimiento() {
         return new RestTemplate();
     }
 }

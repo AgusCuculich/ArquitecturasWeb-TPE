@@ -29,6 +29,11 @@ public class MonopatinController {
         return monopatinService.getMonopatinById(id);
     }
 
+    @GetMapping
+    public List<MonopatinDTO> getAllMonopatines(){
+        return monopatinService.getAllMonopatines();
+    }
+
     @GetMapping("/reporte")
     public List<ReporteMonopatinesDTO> obtenerReporteMonopatines(
             @RequestParam("inicio") @DateTimeFormat(pattern = "yyyy-MM-dd") Date inicio,

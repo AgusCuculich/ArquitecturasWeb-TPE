@@ -5,9 +5,11 @@ import com.dto.RideDTO;
 import com.entity.Fee;
 import com.service.FeeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +35,13 @@ public class FeeController {
     @ResponseStatus(HttpStatus.OK)
     public Optional<FeeDTO> getFee(@PathVariable("id") String id){
         return service.getFee(id);
+    }
+
+    @GetMapping("/totalFacturado/")
+    @ResponseStatus(HttpStatus.OK)
+    public FeeDTO getTotalFacturado (@RequestParam("inicio") @DateTimeFormat(pattern = "yyyy-MM-dd") Date inicio,
+                                     @RequestParam("fin") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fin){
+        return service.totalFacturado(inicio,fin);
     }
 
     @PostMapping

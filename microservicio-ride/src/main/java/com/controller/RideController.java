@@ -5,6 +5,9 @@ import com.dto.ReporteDTO;
 import com.dto.RideDTO;
 import com.dto.ScootersUseDTO;
 import com.entity.Ride;
+import com.dto.ScootersUseDTO;
+import com.dto.UsuarioViajeCountDTO;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -41,6 +44,14 @@ public class RideController {
         return service.generarReporte(inicio, fin, incluirPausas);
     }
 
+
+    @GetMapping("/ranking-usuarios")
+    public List<UsuarioViajeCountDTO> rankingUsuarios(
+            @RequestParam("desde") @DateTimeFormat(pattern = "yyyy-MM-dd") Date desde,
+            @RequestParam("hasta") @DateTimeFormat(pattern = "yyyy-MM-dd") Date hasta
+    ) {
+        return service.getUsuariosConCantidadDeViajes(desde, hasta);
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

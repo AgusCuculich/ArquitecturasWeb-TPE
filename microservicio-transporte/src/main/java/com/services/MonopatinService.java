@@ -97,4 +97,9 @@ public class MonopatinService {
         return monopatinesDTO;
     }
 
+    public List<MonopatinDTO> getAllMonopatines(){
+        return monopatinRepository.getAllMonopatines();
+    }
+
+
 }
