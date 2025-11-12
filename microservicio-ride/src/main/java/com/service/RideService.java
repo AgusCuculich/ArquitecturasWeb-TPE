@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import com.repository.RideRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -84,7 +85,18 @@ public class RideService {
     public ScootersUseDTO getScootersUseByUser(Long idUser, Date startDate, Date endDate) {
         long rideCount = repo.countByIdUserAndStartDateBetween(idUser, startDate, endDate);
         List<Long> otherUsers = client.getOtherUsers(idUser);
-        List<Long> activeUsers = repo.findDistinctUserIdsWithRides(otherUsers, startDate, endDate);
+        List<Long> activeUsers = new ArrayList<>();
+
+        for(Long user : otherUsers) {
+            // buscar si viajo entre las fechas de interes
+            long userRideCount = repo.countByIdUserAndStartDateBetween(user, startDate, endDate);
+
+            // agregarlo a una lista (activeUsers) si es el caso
+            if(userRideCount > 0) {
+                activeUsers.add(user);
+            }
+        }
+
         return new ScootersUseDTO(idUser, rideCount, activeUsers);
     }
 }

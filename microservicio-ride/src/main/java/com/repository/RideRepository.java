@@ -13,11 +13,4 @@ public interface RideRepository extends MongoRepository<Ride,String> {
 
     long countByIdUserAndStartDateBetween(Long idUser, Date start, Date end);
 
-
-    @Aggregation(pipeline = {
-            "{ '$match': { 'idUser': { $in: ?0 }, 'startDate': { $gte: ?1, $lte: ?2 } } }",
-            "{ '$group': { '_id': '$idUser' } }"
-    })
-    List<Long> findDistinctUserIdsWithRides(List<Long> userIds, Date startDate, Date endDate);
-
 }
