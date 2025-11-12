@@ -83,5 +83,9 @@ public class MonopatinService {
         monopatinRepository.save(mono);
     }
 
+    public List<MonopatinDTO> getAllMonopatines(){
+        return monopatinRepository.getAllMonopatines();
+    }
+
 
 }
