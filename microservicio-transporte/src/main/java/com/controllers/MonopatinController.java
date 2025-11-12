@@ -2,6 +2,7 @@ package com.controllers;
 
 
 import com.dtos.MonopatinDTO;
+import com.dtos.ReporteMonopatinesDTO;
 import com.entities.Monopatin;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.utils.EstadoMonopatin;
@@ -9,8 +10,12 @@ import jakarta.servlet.http.PushBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import com.services.MonopatinService;
+
+import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,6 +27,15 @@ public class MonopatinController {
     @GetMapping("/{id}")
     public MonopatinDTO  getMonopatinById(@PathVariable("id") long id){
         return monopatinService.getMonopatinById(id);
+    }
+
+    @GetMapping("/reporte")
+    public List<ReporteMonopatinesDTO> obtenerReporteMonopatines(
+            @RequestParam("inicio") @DateTimeFormat(pattern = "yyyy-MM-dd") Date inicio,
+            @RequestParam("fin") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fin,
+            @RequestParam(value = "incluirPausas", defaultValue = "false") boolean incluirPausas
+    ) {
+        return monopatinService.generarReporteMonopatines(inicio, fin, incluirPausas);
     }
 
     @PostMapping
@@ -44,7 +58,12 @@ public class MonopatinController {
         monopatinService.actualizarEstado(id, estado);
     }
 
-
+    @GetMapping("/stats")
+    public List<MonopatinDTO> getMonopatinesConMasViajes(
+            @RequestParam("anio") int anio,
+            @RequestParam("viajes") int viajes) {
+        return monopatinService.getScooterStats(anio, viajes);
+    }
 
 
 
