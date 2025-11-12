@@ -7,12 +7,14 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 
 @Entity
 @Table(name = "users")
 @Data
+@ToString(exclude = "accounts")
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {

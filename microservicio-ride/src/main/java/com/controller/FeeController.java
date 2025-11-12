@@ -23,6 +23,12 @@ public class FeeController {
         return service.getAllFees();
     }
 
+    @GetMapping("/debug")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Fee> getAllFeesDebug(){
+        return service.getAllFeesDebug();
+    }
+
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Optional<FeeDTO> getFee(@PathVariable("id") String id){
