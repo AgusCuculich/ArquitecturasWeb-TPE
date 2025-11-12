@@ -62,7 +62,7 @@ public interface RideRepository extends MongoRepository<Ride,String> {
     @Aggregation(pipeline = {
             "{ $match: { start_date: { $gte: ?0, $lte: ?1 } } }",
             "{ $group: { _id: '$id_user', cantidadViajes: { $sum: 1 } } }",
-            "{ $project: { _id: 0, idUsuario: '$_id', cantidadViajes: 1 } }"
+            "{ $project: { _id: 0, id: '$_id', cantidadViajes: 1 } }"
     })
     List<UsuarioViajeCountDTO> contarViajesPorUsuario(Date desde, Date hasta);
 
