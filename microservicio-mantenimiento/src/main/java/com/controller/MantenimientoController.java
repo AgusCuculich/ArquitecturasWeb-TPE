@@ -25,5 +25,10 @@ public class MantenimientoController {
     public Mantenimiento registrar(@RequestBody MantenimientoDTO dto) {
         return mantenimientoService.registrarMantenimiento(dto);
     }
+    @DeleteMapping("/eliminar/{id}")
+    public void eliminar(@PathVariable("id") Long id) {
+        mantenimientoService.deleteMantenimiento(id);
+    }
+
 
 }

@@ -10,7 +10,9 @@ import com.repository.MantenimientoRepository;
 
 import lombok.AllArgsConstructor;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -23,14 +25,12 @@ public class MantenimientoService {
 
     private final MantenimientoRepository mantenimientoRepository;
 
-    private final TransporteClient transporteClient; // <— usamos el componente
+    private final TransporteClient transporteClient;
 
     public Mantenimiento registrarMantenimiento(MantenimientoDTO dto) {
 
-        // 1) Cambiar el estado del monopatín en el microservicio de transporte
         transporteClient.actualizarEstadoMonopatin(dto.getMonopatin_id(), MANTENIMIENTO);
-     
-        // 2) Guardar mantenimiento en BD local
+
         Mantenimiento mantenimiento = new Mantenimiento();
         mantenimiento.setFecha_inicio(dto.getFecha_inicio());
         mantenimiento.setFecha_fin(dto.getFecha_fin());
@@ -45,7 +45,11 @@ public class MantenimientoService {
     }
 
 
-
-
+    public void deleteMantenimiento(long id) {
+        if (!mantenimientoRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Mantenimiento no encontrado");
+        }
+        mantenimientoRepository.deleteById(id);
+    }
 
 }
