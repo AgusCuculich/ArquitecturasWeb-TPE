@@ -1,0 +1,1481 @@
+{
+	"info": {
+		"_postman_id": "df10598e-d230-40d3-b38d-c94a8f81b1ce",
+		"name": "TPE arquitecturas-2025",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40599849"
+	},
+	"item": [
+		{
+			"name": "Poblar users",
+			"item": [
+				{
+					"name": "1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Carlos\",\r\n  \"surname\": \"Ramírez\",\r\n  \"mobile\": 549113334445,\r\n  \"rol\": \"ADMINISTRADOR\",\r\n  \"tipo\": \"PREMIUM\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"María\",\r\n  \"surname\": \"Fernández\",\r\n  \"mobile\": 549114567890,\r\n  \"rol\": \"USUARIO\",\r\n  \"tipo\": \"ESTANDAR\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Jorge\",\r\n  \"surname\": \"López\",\r\n  \"mobile\": 549115678901,\r\n  \"rol\": \"MANTENIMIENTO\",\r\n  \"tipo\": \"PREMIUM\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Asociar user 1 a account 1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/users/1/linkAccount/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"1",
+								"linkAccount",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Asociar user 2 a account 1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/users/2/linkAccount/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"2",
+								"linkAccount",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Poblar accounts",
+			"item": [
+				{
+					"name": "1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n    \"tipo\": \"MercadoPago\",\r\n    \"fecha_alta\": \"2025-01-10T00:00:00.000+00:00\",\r\n    \"saldo\": 25000.5\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/accounts",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Poblar rides",
+			"item": [
+				{
+					"name": "1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n    \"startDate\": \"2024-07-20T17:40:00\",\r\n    \"endDate\": \"2024-07-20T18:15:00\",\r\n    \"breakTime\": \"00:02:00\",\r\n    \"kilometers\": 4.2,\r\n    \"idUser\": 1,\r\n    \"idScooter\": 1\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/rides",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rides"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n    \"startDate\": \"2024-05-13T13:00:00\",\r\n    \"endDate\": \"2024-05-13T13:35:00\",\r\n    \"breakTime\": \"00:04:00\",\r\n    \"kilometers\": 6.1,\r\n    \"idUser\": 2,\r\n    \"idScooter\": 1\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/rides",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rides"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n    \"startDate\": \"2024-02-05T14:00:00\",\r\n    \"endDate\": \"2024-02-05T14:25:00\",\r\n    \"breakTime\": \"00:02:00\",\r\n    \"kilometers\": 4.8,\r\n    \"idUser\": 1,\r\n    \"idScooter\": 1\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/rides",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rides"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n    \"startDate\": \"2024-03-21T16:10:00\",\r\n    \"endDate\": \"2024-03-21T16:40:00\",\r\n    \"breakTime\": \"00:03:00\",\r\n    \"kilometers\": 2.7,\r\n    \"idUser\": 2,\r\n    \"idScooter\": 2\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/rides",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rides"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n    \"startDate\": \"2024-04-01T11:20:00\",\r\n    \"endDate\": \"2024-04-01T11:55:00\",\r\n    \"breakTime\": \"00:01:00\",\r\n    \"kilometers\": 5.3,\r\n    \"idUser\": 2,\r\n    \"idScooter\": 2\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/rides",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rides"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Poblar monopatines",
+			"item": [
+				{
+					"name": "1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n    \"parada_id\": 1,\r\n    \"GPS\": 987654321001,\r\n    \"estado\": \"DISPONIBLE\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/monopatines",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"monopatines"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n    \"parada_id\": 1,\r\n    \"GPS\": 987654321002,\r\n    \"estado\": \"OCUPADO\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/monopatines",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"monopatines"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n    \"parada_id\": 2,\r\n    \"GPS\": 987654321003,\r\n    \"estado\": \"MANTENIMIENTO\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/monopatines",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"monopatines"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Poblar fee",
+			"item": [
+				{
+					"name": "1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"price\": 2000,\r\n  \"startDate\": \"2025-11-01T00:00:00\",\r\n  \"endDate\": \"2025-11-15T23:59:59\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/fees",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"fees"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "microservicio-user",
+			"item": [
+				{
+					"name": "user",
+					"item": [
+						{
+							"name": "getAll",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/users/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "save",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Carlos\",\r\n  \"surname\": \"Ramírez\",\r\n  \"mobile\": 549113334445,\r\n  \"rol\": \"ADMINISTRADOR\",\r\n  \"tipo\": \"PREMIUM\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Jose\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/users/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Jose\"\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/users/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "debug",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/users/debug",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users",
+										"debug"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "account",
+					"item": [
+						{
+							"name": "getAll",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Jose\"\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/accounts",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"accounts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/accounts/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"accounts",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "save",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "  {\r\n    \"tipo\": \"MercadoPago\",\r\n    \"fecha_alta\": \"2025-01-10T00:00:00.000+00:00\",\r\n    \"saldo\": 25000.5\r\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/accounts",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"accounts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "  {\r\n    \"tipo\": \"Uala\"\r\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/accounts/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"accounts",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/accounts/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"accounts",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "microservicio-ride",
+			"item": [
+				{
+					"name": "ride",
+					"item": [
+						{
+							"name": "getAll",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "  {\r\n    \"tipo\": \"Uala\"\r\n  }"
+								},
+								"url": {
+									"raw": "http://localhost:8080/rides",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"rides"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/rides/6914daf00b9a5331e865c915",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"rides",
+										"6914daf00b9a5331e865c915"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "debug",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/rides/debug",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"rides",
+										"debug"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idUser\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/rides/6914daf00b9a5331e865c915",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"rides",
+										"6914daf00b9a5331e865c915"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/rides/6914daf00b9a5331e865c915",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"rides",
+										"6914daf00b9a5331e865c915"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "fee",
+					"item": [
+						{
+							"name": "debug",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/fees/debug",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"fees",
+										"debug"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAll",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/fees",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"fees"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/fees/6914e0810b9a5331e865c91a",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"fees",
+										"6914e0810b9a5331e865c91a"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "save",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"price\": 2000,\r\n  \"startDate\": \"2025-12-01T00:00:00\",\r\n  \"endDate\": \"2025-12-15T23:59:59\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/fees",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"fees"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"price\": 5000\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/fees/69152f1169a26c270f86c4a8",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"fees",
+										"69152f1169a26c270f86c4a8"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/fees/69152f1169a26c270f86c4a8",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"fees",
+										"69152f1169a26c270f86c4a8"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "microservicio-mantenimiento",
+			"item": [
+				{
+					"name": "getMantenimientos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/mantenimientos/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"mantenimientos",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "registrarMonopatin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"fecha_inicio\": \"2025-11-12\",\r\n  \"fecha_fin\": \"2025-11-13\",\r\n  \"monopatin_id\": 1,\r\n  \"encargado_id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/mantenimientos/registrar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"mantenimientos",
+								"registrar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "eliminarMantenimiento",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/mantenimientos/eliminar/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"mantenimientos",
+								"eliminar",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "microservicio-transporte",
+			"item": [
+				{
+					"name": "getMonopatin",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/monopatines/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"monopatines",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cambiarMonopatinDeParada",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/monopatines/1/parada/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"monopatines",
+								"1",
+								"parada",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getParada",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/paradas/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"paradas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "elinimarMonopatin",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/monopatines/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"monopatines",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "actualizarEstadoMonopatin",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/monopatines/1/estado?estado=MANTENIMIENTO\n",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"monopatines",
+								"1",
+								"estado"
+							],
+							"query": [
+								{
+									"key": "estado",
+									"value": "MANTENIMIENTO\n"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getParadas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/paradas/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"paradas",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "saveParada",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"gps\": 123456789\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/paradas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"paradas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "eliminarParada",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/paradas/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"paradas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "saveMonopatin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"parada_id\": 1,\r\n  \"gps\": 123456789,\r\n  \"estado\": \"DISPONIBLE\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/monopatines",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"monopatines"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getMonopatines",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/monopatines",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"monopatines"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "incisos",
+			"item": [
+				{
+					"name": "Inciso b",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/users/disable/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"disable",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Inciso c",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/monopatines/stats?anio=2024&viajes=2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"monopatines",
+								"stats"
+							],
+							"query": [
+								{
+									"key": "anio",
+									"value": "2024"
+								},
+								{
+									"key": "viajes",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Inciso f",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"price\": 3000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/fees/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"fees",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Inciso h",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/rides/scooterUse/1?startDate=2024-01-01&endDate=2024-12-25",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rides",
+								"scooterUse",
+								"1"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "2024-01-01"
+								},
+								{
+									"key": "endDate",
+									"value": "2024-12-25"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "inciso_d",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/users/reporte-tarifas?desde=2025-01-01&hasta=2025-11-11",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"reporte-tarifas"
+							],
+							"query": [
+								{
+									"key": "desde",
+									"value": "2025-01-01"
+								},
+								{
+									"key": "hasta",
+									"value": "2025-11-11"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Inciso e",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/users/ranking?desde=2024-01-01&hasta=2024-11-11&rol=USUARIO",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"ranking"
+							],
+							"query": [
+								{
+									"key": "desde",
+									"value": "2024-01-01"
+								},
+								{
+									"key": "hasta",
+									"value": "2024-11-11"
+								},
+								{
+									"key": "rol",
+									"value": "USUARIO"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Inciso a",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/monopatines/reporte?inicio=2024-01-01&fin=2024-11-12&incluirPausas=true",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"monopatines",
+								"reporte"
+							],
+							"query": [
+								{
+									"key": "inicio",
+									"value": "2024-01-01"
+								},
+								{
+									"key": "fin",
+									"value": "2024-11-12"
+								},
+								{
+									"key": "incluirPausas",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
