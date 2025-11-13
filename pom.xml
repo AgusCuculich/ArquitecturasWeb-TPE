@@ -13,6 +13,7 @@
         <module>microservicio-transporte</module>
         <module>microservicio-mantenimiento</module>
         <module>microservicio-ride</module>
+        <module>microservicio-gateway</module>
     </modules>
 
     <properties>
