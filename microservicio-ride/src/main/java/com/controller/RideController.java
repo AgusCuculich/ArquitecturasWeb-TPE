@@ -30,6 +30,12 @@ public class RideController {
         return service.getAllRides();
     }
 
+    @GetMapping("/debug")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Ride> getAllRidesDebug() {
+        return service.getAllRidesDebug();
+    }
+
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Optional<RideDTO> getRide(@PathVariable("id") String id) {return service.getRide(id);}
