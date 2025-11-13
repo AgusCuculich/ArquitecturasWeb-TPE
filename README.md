@@ -1,0 +1,1 @@
+![DER](./img/tpe-arqui.jpg)
