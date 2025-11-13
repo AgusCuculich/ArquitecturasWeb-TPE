@@ -40,6 +40,7 @@ public class MonopatinController {
             @RequestParam("fin") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fin,
             @RequestParam(value = "incluirPausas", defaultValue = "false") boolean incluirPausas
     ) {
+        System.out.println("Entro consulta reporte");
         return monopatinService.generarReporteMonopatines(inicio, fin, incluirPausas);
     }
 

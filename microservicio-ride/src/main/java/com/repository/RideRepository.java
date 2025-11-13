@@ -1,5 +1,6 @@
 package com.repository;
 
+import com.dto.ReporteDTO;
 import com.dto.ReporteProjection;
 import com.dto.ReporteProjection;
 import com.dto.UsuarioViajeCountDTO;
@@ -28,22 +29,39 @@ public interface RideRepository extends MongoRepository<Ride,String> {
     List<Long> findDistinctUserIdsWithRides(List<Long> userIds, Date startDate, Date endDate);
 
 
-    // SIN pausas
     @Aggregation(pipeline = {
             "{ $match: { start_date: { $gte: ?0, $lte: ?1 } } }",
-            "{ $group: { _id: \"$id_scooter\", totalKilometros: { $sum: \"$kilometers\" } } }",
-            "{ $project: { idScooter: \"$_id\", totalKilometros: 1, _id: 0 } }"
+            "{ $group: { " +
+                    "_id: \"$id_scooter\", " +
+                    "sumaKilometros: { $sum: \"$kilometers\" } " +
+                    "} }",
+            "{ $project: { " +
+                    "idmonopatin: \"$_id\", " +             // Renombrado de 'idScooter' a 'idmonopatin'
+                    "kilometros: \"$sumaKilometros\", " + // Renombrado de 'totalKilometros' a 'kilometros'
+                    "pausa: { $literal: null }, " +      // Agregado 'pausa' como null para que coincida con el DTO
+                    "_id: 0 " +
+                    "} }"
     })
-    List<ReporteProjection> obtenerReporteSinPausa(Date fechaInicio, Date fechaFin);
+    List<ReporteDTO> obtenerReporteSinPausa(Date fechaInicio, Date fechaFin);
 
 
-    // CON pausas
+// ===== REPORTE CON PAUSAS (Corregido) =====
+
     @Aggregation(pipeline = {
             "{ $match: { start_date: { $gte: ?0, $lte: ?1 } } }",
-            "{ $group: { _id: \"$id_scooter\", totalKilometros: { $sum: \"$kilometers\" }, pausas: { $push: \"$break_time\" } } }",
-            "{ $project: { idScooter: \"$_id\", totalKilometros: 1, pausas: 1, _id: 0 } }"
+            "{ $group: { " +
+                    "_id: \"$id_scooter\", " +
+                    "sumaKilometros: { $sum: \"$kilometers\" }, " +
+                    "tiempoPausa: { $first: \"$break_time\" } " + // Cambiado de $push (array) a $first (valor único)
+                    "} }",
+            "{ $project: { " +
+                    "idmonopatin: \"$_id\", " +             // Renombrado
+                    "kilometros: \"$sumaKilometros\", " + // Renombrado
+                    "pausa: \"$tiempoPausa\", " +        // Renombrado
+                    "_id: 0 " +
+                    "} }"
     })
-    List<ReporteProjection> obtenerReporteConPausa(Date fechaInicio, Date fechaFin);
+    List<ReporteDTO> obtenerReporteConPausa(Date fechaInicio, Date fechaFin);
 
 
     //devuelve todos los usuarios con la cantidad de viajes realizados en un rango de fechas(inciso e)

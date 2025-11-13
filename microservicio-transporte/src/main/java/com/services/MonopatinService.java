@@ -30,24 +30,28 @@ public class MonopatinService {
                 fin,
                 incluirPausas
         );
+        System.out.println("reporteRides de mongo"+reporteRides);
 
         // 2) Traemos los monopatines que ya están en mantenimiento
         List<Long> idsEnMantenimiento = monopatinRepository.findIdsEnMantenimiento();
+        System.out.println("ides monopatinMantenimiiento"+idsEnMantenimiento);
+
 
         // 3) Filtramos para excluir esos monopatines
         List<ReporteMonopatinesDTO> filtrado = reporteRides.stream()
-                .filter(r -> !idsEnMantenimiento.contains(r.getIdMonopatin()))
+                .filter(r -> !idsEnMantenimiento.contains(r.getIdmonopatin()))
                 .toList();
+        System.out.println("filtrados"+filtrado);
 
         // 4) Convertimos a ReporteMonopatinesDTO
         return reporteRides.stream()
-                .filter(r -> !idsEnMantenimiento.contains(r.getIdMonopatin()))
+                .filter(r -> !idsEnMantenimiento.contains(r.getIdmonopatin()))
                 .map(r -> {
                     ReporteMonopatinesDTO dto = new ReporteMonopatinesDTO();
-                    dto.setIdMonopatin(r.getIdMonopatin());
-                    dto.setKilometrosRecorridos(r.getKilometrosRecorridos());
-                    dto.setRequiereMantenimiento(r.getKilometrosRecorridos()>= 100 ? "SI" : "NO");
-                    dto.setTiempoPausa(incluirPausas ? r.getTiempoPausa(): null);
+                    dto.setIdmonopatin(r.getIdmonopatin());
+                    dto.setKilometros(r.getKilometros());
+                    dto.setRequiereMantenimiento(r.getKilometros()>= 100 ? "SI" : "NO");
+                    dto.setPausa(incluirPausas ? r.getPausa(): null);
                     return dto;
                 })
                 .toList();

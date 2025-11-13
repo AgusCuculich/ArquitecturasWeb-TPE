@@ -24,6 +24,7 @@ public class RideClient {
                 inicio, fin, incluirPausas
         );
         ReporteMonopatinesDTO[] response = restTemplate.getForObject(url, ReporteMonopatinesDTO[].class);
+        System.out.println("return despues de consulta de mongo dentro de client"+response);
         return Arrays.asList(response);
     }
 }
