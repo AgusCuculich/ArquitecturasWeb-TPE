@@ -1,9 +1,7 @@
 package com.repository;
 
-import com.dto.RideCountResult;
+import com.dto.*;
 import com.dto.ReporteProjection;
-import com.dto.ReporteProjection;
-import com.dto.UsuarioViajeCountDTO;
 import com.entity.Ride;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -40,22 +38,40 @@ public interface RideRepository extends MongoRepository<Ride,String> {
     })
     List<RideCountResult> findMonopatinesConMasViajesEnAnio(int anio, int x);
 
-    // SIN pausas
+    // ===== REPORTE SIN PAUSAS =====
     @Aggregation(pipeline = {
             "{ $match: { start_date: { $gte: ?0, $lte: ?1 } } }",
-            "{ $group: { _id: \"$id_scooter\", totalKilometros: { $sum: \"$kilometers\" } } }",
-            "{ $project: { idScooter: \"$_id\", totalKilometros: 1, _id: 0 } }"
+            "{ $group: { " +
+                    "_id: \"$id_scooter\", " +
+                    "sumaKilometros: { $sum: \"$kilometers\" } " +
+                    "} }",
+            "{ $project: { " +
+                    "idmonopatin: \"$_id\", " +             // Renombrado de 'idScooter' a 'idmonopatin'
+                    "kilometros: \"$sumaKilometros\", " +   // Renombrado de 'totalKilometros' a 'kilometros'
+                    "pausa: { $literal: null }, " +         // Agregado 'pausa' como null
+                    "_id: 0 " +
+                    "} }"
     })
-    List<ReporteProjection> obtenerReporteSinPausa(Date fechaInicio, Date fechaFin);
+    List<ReporteDTO> obtenerReporteSinPausa(Date fechaInicio, Date fechaFin);
 
 
-    // CON pausas
+    // ===== REPORTE CON PAUSAS =====
     @Aggregation(pipeline = {
             "{ $match: { start_date: { $gte: ?0, $lte: ?1 } } }",
-            "{ $group: { _id: \"$id_scooter\", totalKilometros: { $sum: \"$kilometers\" }, pausas: { $push: \"$break_time\" } } }",
-            "{ $project: { idScooter: \"$_id\", totalKilometros: 1, pausas: 1, _id: 0 } }"
+            "{ $group: { " +
+                    "_id: \"$id_scooter\", " +
+                    "sumaKilometros: { $sum: \"$kilometers\" }, " +
+                    "tiempoPausa: { $first: \"$break_time\" } " +
+                    "} }",
+            "{ $project: { " +
+                    "idmonopatin: \"$_id\", " +             // Renombrado
+                    "kilometros: \"$sumaKilometros\", " +   // Renombrado
+                    "pausa: \"$tiempoPausa\", " +           // Renombrado
+                    "_id: 0 " +
+                    "} }"
     })
-    List<ReporteProjection> obtenerReporteConPausa(Date fechaInicio, Date fechaFin);
+    List<ReporteDTO> obtenerReporteConPausa(Date fechaInicio, Date fechaFin);
+
 
 
     //devuelve todos los usuarios con la cantidad de viajes realizados en un rango de fechas(inciso e)

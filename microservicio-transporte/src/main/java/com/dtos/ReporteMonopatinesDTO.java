@@ -11,8 +11,8 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReporteMonopatinesDTO {
-    private Long IdMonopatin;
-    private Double kilometrosRecorridos;
+    private LocalTime pausa;
+    private Double kilometros;
+    private Long idmonopatin;
     private String requiereMantenimiento;
-    private LocalTime tiempoPausa;
 }

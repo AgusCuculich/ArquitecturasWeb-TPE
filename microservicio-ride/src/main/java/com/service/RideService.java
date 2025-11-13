@@ -98,28 +98,19 @@ public class RideService {
 
     public List<ReporteDTO> generarReporte(Date inicio, Date fin, boolean incluirPausas) {
 
-        List<ReporteProjection> resultados = incluirPausas
-                ? repo.obtenerReporteConPausa(inicio, fin)
-                : repo.obtenerReporteSinPausa(inicio, fin);
+        // 1. Elige qué método del repositorio llamar
+        if (incluirPausas) {
+            // Esta consulta (que ya corregimos) devuelve una
+            // List<ReporteDTO> con los campos 'idmonopatin', 'kilometros' y 'pausa'
+            return repo.obtenerReporteConPausa(inicio, fin);
+        } else {
+            // Esta consulta (que ya corregimos) devuelve una
+            // List<ReporteDTO> con 'idmonopatin', 'kilometros' y 'pausa: null'
+            return repo.obtenerReporteSinPausa(inicio, fin);
+        }
 
-        return resultados.stream().map(r -> {
-
-            ReporteDTO dto = new ReporteDTO();
-            dto.setIdmonopatin(r.getIdScooter());
-            dto.setKilometros(r.getTotalKilometros());
-
-            if (incluirPausas && r.getPausas() != null) {
-                LocalTime pauseSum = r.getPausas().stream()
-                        .reduce(LocalTime.of(0,0), (a,b) ->
-                                a.plusHours(b.getHour()).plusMinutes(b.getMinute()).plusSeconds(b.getSecond()));
-                dto.setPausa(pauseSum);
-            } else {
-                dto.setPausa(LocalTime.of(0,0));
-            }
-
-            return dto;
-
-        }).toList();
+        // 2. El stream().map(...) que tenías antes se elimina
+        //    porque el repositorio ya devuelve el DTO listo.
     }
 
 
