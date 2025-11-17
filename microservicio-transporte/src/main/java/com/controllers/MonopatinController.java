@@ -24,6 +24,9 @@ public class MonopatinController {
 
     private final MonopatinService monopatinService;
 
+    @GetMapping("/debug")
+    public List<Monopatin> debug() {return monopatinService.getAllMonopatinesDebug();}
+
     @GetMapping("/{id}")
     public MonopatinDTO  getMonopatinById(@PathVariable("id") long id){
         return monopatinService.getMonopatinById(id);

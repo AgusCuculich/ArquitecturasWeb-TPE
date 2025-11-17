@@ -8,5 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ParadaDTO {
-    private Long GPS;
+    private Long latitud;
+    private Long longitud;
 }

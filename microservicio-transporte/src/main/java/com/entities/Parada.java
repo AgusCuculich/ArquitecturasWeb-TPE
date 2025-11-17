@@ -15,6 +15,8 @@ public class Parada {
     private Long parada_id;
 
     @Column
-    @JsonProperty("gps")
-    private Long GPS;
+    private Long latitud;
+
+    @Column
+    private Long longitud;
 }

@@ -22,6 +22,10 @@ public class MonopatinService {
 
     private final RideClient rideClient;
 
+    public List<Monopatin> getAllMonopatinesDebug() {
+        return monopatinRepository.findAll();
+    }
+
     public List<ReporteMonopatinesDTO> generarReporteMonopatines(Date inicio, Date fin, boolean incluirPausas) {
 
         // 1) Llamamos al servicio de rides

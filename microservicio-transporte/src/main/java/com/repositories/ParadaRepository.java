@@ -12,9 +12,9 @@ import java.util.List;
 @Repository
 public interface ParadaRepository extends JpaRepository<Parada,Long> {
 
-    @Query("SELECT new com.dtos.ParadaDTO(p.GPS) FROM Parada p WHERE p.parada_id = :parada_id")
+    @Query("SELECT new com.dtos.ParadaDTO(p.latitud, p.longitud) FROM Parada p WHERE p.parada_id = :parada_id")
     ParadaDTO findByParada_id(@Param("parada_id") Long parada_id);
 
-    @Query("SELECT new com.dtos.ParadaDTO(p.GPS) FROM Parada p")
+    @Query("SELECT new com.dtos.ParadaDTO(p.latitud, p.longitud) FROM Parada p")
     List<ParadaDTO>getAllParadas();
 }

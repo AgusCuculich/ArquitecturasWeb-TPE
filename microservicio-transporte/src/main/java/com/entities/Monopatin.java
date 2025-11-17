@@ -17,8 +17,11 @@ public class Monopatin {
     @Column
     private Long parada_id;
 
-    @Column
-    private Long GPS;
+    @Column(nullable = false)
+    private Long latitud;
+
+    @Column(nullable = false)
+    private Long longitud;
 
     @Enumerated(EnumType.STRING)
     private EstadoMonopatin estado;
