@@ -83,5 +83,7 @@ public interface RideRepository extends MongoRepository<Ride,String> {
     List<UsuarioViajeCountDTO> contarViajesPorUsuario(Date desde, Date hasta);
 
 
+    List<Ride> findByStartDateBetween(Date start, Date end);
+
 
 }

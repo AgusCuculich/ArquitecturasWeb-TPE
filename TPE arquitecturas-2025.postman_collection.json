@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "0d253d7a-2d65-4742-8060-e1b6b2b3e2c4",
+		"_postman_id": "9a659b60-de32-4a9c-86a2-54ccb24a2e99",
 		"name": "TPE arquitecturas-2025",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "36797172"
+		"_exporter_id": "49272331"
 	},
 	"item": [
 		{
@@ -430,6 +430,33 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"price\": 2000,\r\n  \"startDate\": \"2025-11-01T00:00:00\",\r\n  \"endDate\": \"2025-11-15T23:59:59\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/fees",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"fees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"price\": 3000,\r\n  \"startDate\": \"2024-01-15T00:00:00.000Z\",\r\n  \"endDate\": \"2024-04-01T00:00:00.000Z\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1425,36 +1452,6 @@
 					"response": []
 				},
 				{
-					"name": "inciso_d",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/users/reporte-tarifas?desde=2025-01-01&hasta=2025-11-11",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"users",
-								"reporte-tarifas"
-							],
-							"query": [
-								{
-									"key": "desde",
-									"value": "2025-01-01"
-								},
-								{
-									"key": "hasta",
-									"value": "2025-11-11"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Inciso e",
 					"request": {
 						"method": "GET",
@@ -1550,6 +1547,35 @@
 								{
 									"key": "radio",
 									"value": "500"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Inciso d",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/fees/facturacion?start=2024-02-01&end=2024-03-25",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"fees",
+								"facturacion"
+							],
+							"query": [
+								{
+									"key": "start",
+									"value": "2024-02-01"
+								},
+								{
+									"key": "end",
+									"value": "2024-03-25"
 								}
 							]
 						}

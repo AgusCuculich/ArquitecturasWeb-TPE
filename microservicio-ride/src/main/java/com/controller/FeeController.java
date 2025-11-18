@@ -3,6 +3,7 @@ package com.controller;
 import com.dto.FeeDTO;
 import com.dto.RideDTO;
 import com.entity.Fee;
+import com.entity.Ride;
 import com.service.FeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -37,13 +38,6 @@ public class FeeController {
         return service.getFee(id);
     }
 
-    @GetMapping("/totalFacturado/")
-    @ResponseStatus(HttpStatus.OK)
-    public FeeDTO getTotalFacturado (@RequestParam("inicio") @DateTimeFormat(pattern = "yyyy-MM-dd") Date inicio,
-                                     @RequestParam("fin") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fin){
-        return service.totalFacturado(inicio,fin);
-    }
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void saveFee(@RequestBody FeeDTO fee){
@@ -61,4 +55,13 @@ public class FeeController {
     public void deleteFee(@PathVariable("id") String id){
         service.deleteRide(id);
     }
+
+
+    @GetMapping("/facturacion")
+    public double getTotalFees(
+            @RequestParam("start") @DateTimeFormat(pattern = "yyyy-MM-dd") Date start,
+            @RequestParam("end") @DateTimeFormat(pattern = "yyyy-MM-dd") Date end) {
+        return service.getTotalFees(start, end);
+    }
+
 }

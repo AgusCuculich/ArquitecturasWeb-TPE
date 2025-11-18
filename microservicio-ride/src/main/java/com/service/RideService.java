@@ -135,4 +135,25 @@ public class RideService {
         return repo.contarViajesPorUsuario(desde, hasta);
     }
 
+
+    public List<RideDTO> getRidesBetweenDates(Date start, Date end) {
+        List<Ride> rides = repo.findByStartDateBetween(start, end);
+        List<RideDTO> dtos = new ArrayList<>();
+
+        for (Ride ride : rides) {
+            RideDTO dto = new RideDTO(
+                    ride.getStartDate(),
+                    ride.getEndDate(),
+                    ride.getBreakTime(),
+                    ride.getKilometers(),
+                    ride.getIdUser(),
+                    ride.getIdScooter()
+            );
+            dtos.add(dto);
+        }
+
+        return dtos;
+    }
+
+
 }

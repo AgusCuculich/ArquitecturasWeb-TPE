@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FeeService {
     private final FeeRepository repo;
+    private final RideService rideService;
 
 
     public List<Fee> getAllFeesDebug(){
@@ -43,15 +44,7 @@ public class FeeService {
                 ));
     }
 
-    public FeeDTO totalFacturado(Date inicio, Date fin){
 
-        List<Fee> facturas = repo.totalFacturado(inicio, fin);
-
-        Double sumaTotal = facturas.stream()
-                .mapToDouble(Fee::getPrice)
-                .sum();
-        return new FeeDTO(sumaTotal, inicio, fin);
-    }
 
     public void saveFee(FeeDTO dto){
         Fee fee = new Fee();
@@ -76,4 +69,24 @@ public class FeeService {
     }
 
     public void deleteRide(String id) {repo.deleteById(id);}
+
+
+    public double getTotalFees(Date start, Date end){
+        List<RideDTO> rides = rideService.getRidesBetweenDates(start,end);
+        double suma = 0;
+        for(RideDTO ride : rides){
+            System.out.println("Iterando: " + ride);
+            Fee tarifa = getFeeByDates(ride.getStartDate(), ride.getEndDate());
+            System.out.println("Tarifa encontrada: " + tarifa);
+            suma+= tarifa != null ? tarifa.getPrice() : 0;
+            System.out.println("Suma actual: " + suma);
+        }
+        return suma;
+    }
+
+
+    private Fee getFeeByDates(Date start, Date end){
+        return repo.findFeeForRange(start,end);
+    }
+
 }
