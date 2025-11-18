@@ -22,4 +22,8 @@ public interface MonopatinRepository extends JpaRepository<Monopatin,Long> {
     @Query("SELECT new com.dtos.MonopatinDTO(m.parada_id,m.estado) FROM Monopatin m")
     List<MonopatinDTO> getAllMonopatines();
 
+    @Query("SELECT m FROM Monopatin m " +
+            "WHERE m.estado = 'DISPONIBLE'")
+    List<Monopatin> getAllAvailableScooters();
+
 }

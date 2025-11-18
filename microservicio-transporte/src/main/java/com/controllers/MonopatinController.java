@@ -73,6 +73,12 @@ public class MonopatinController {
         return monopatinService.getScooterStats(anio, viajes);
     }
 
-
+    @GetMapping("/nearby")
+    public List<MonopatinDTO> getAllNearbyScooters(
+            @RequestParam("latitud") double latitud,
+            @RequestParam("longitud") double longitud,
+            @RequestParam("radio") double radio) {
+        return monopatinService.getAllNearbyScooters(latitud, longitud, radio);
+    }
 
 }

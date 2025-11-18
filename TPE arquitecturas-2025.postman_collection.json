@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "df10598e-d230-40d3-b38d-c94a8f81b1ce",
+		"_postman_id": "0d253d7a-2d65-4742-8060-e1b6b2b3e2c4",
 		"name": "TPE arquitecturas-2025",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "40599849"
+		"_exporter_id": "36797172"
 	},
 	"item": [
 		{
@@ -316,7 +316,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "  {\r\n    \"parada_id\": 1,\r\n    \"GPS\": 987654321001,\r\n    \"estado\": \"DISPONIBLE\"\r\n  }",
+							"raw": "{\r\n  \"parada_id\": 1,\r\n  \"latitud\": -34.603500,\r\n  \"longitud\": -58.381700,\r\n  \"estado\": \"DISPONIBLE\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -343,7 +343,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "  {\r\n    \"parada_id\": 1,\r\n    \"GPS\": 987654321002,\r\n    \"estado\": \"OCUPADO\"\r\n  }",
+							"raw": "{\r\n  \"parada_id\": 1,\r\n  \"latitud\": -34.603150,\r\n  \"longitud\": -58.382100,\r\n  \"estado\": \"OCUPADO\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -370,7 +370,34 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "  {\r\n    \"parada_id\": 2,\r\n    \"GPS\": 987654321003,\r\n    \"estado\": \"MANTENIMIENTO\"\r\n  }",
+							"raw": "{\r\n  \"parada_id\": 2,\r\n  \"latitud\": -34.600800,\r\n  \"longitud\": -58.380900,\r\n  \"estado\": \"MANTENIMIENTO\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/monopatines",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"monopatines"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"parada_id\": 3,\r\n  \"latitud\": -34.602950,\r\n  \"longitud\": -58.381300,\r\n  \"estado\": \"DISPONIBLE\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1264,6 +1291,26 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "debug",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/monopatines/debug",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"monopatines",
+								"debug"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -1469,6 +1516,40 @@
 								{
 									"key": "incluirPausas",
 									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Inciso g",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/monopatines/nearby?latitud=-34.603722&longitud=-58.381592&radio=500",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"monopatines",
+								"nearby"
+							],
+							"query": [
+								{
+									"key": "latitud",
+									"value": "-34.603722"
+								},
+								{
+									"key": "longitud",
+									"value": "-58.381592"
+								},
+								{
+									"key": "radio",
+									"value": "500"
 								}
 							]
 						}

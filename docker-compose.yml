@@ -9,8 +9,6 @@ services:
       - "27017:27017"
     environment:
       MONGO_INITDB_DATABASE: rides_db
-    volumes:
-      - mongo_data:/data/db
 
   # MySQL para servicio de usuarios
   mysql_user:
@@ -22,8 +20,6 @@ services:
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_DATABASE: user_db
-    volumes:
-      - mysql_user_data:/var/lib/mysql
     command: --default-authentication-plugin=mysql_native_password
 
   # MySQL para servicio de transporte
@@ -36,8 +32,6 @@ services:
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_DATABASE: transport_db
-    volumes:
-      - mysql_transport_data:/var/lib/mysql
     command: --default-authentication-plugin=mysql_native_password
 
   # MySQL para servicio de mantenimiento
@@ -50,12 +44,4 @@ services:
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_DATABASE: maintenance_db
-    volumes:
-      - mysql_maintenance_data:/var/lib/mysql
     command: --default-authentication-plugin=mysql_native_password
-
-volumes:
-  mongo_data:
-  mysql_user_data:
-  mysql_transport_data:
-  mysql_maintenance_data:

@@ -15,8 +15,8 @@ public class Parada {
     private Long parada_id;
 
     @Column
-    private Long latitud;
+    private double latitud;
 
     @Column
-    private Long longitud;
+    private double longitud;
 }

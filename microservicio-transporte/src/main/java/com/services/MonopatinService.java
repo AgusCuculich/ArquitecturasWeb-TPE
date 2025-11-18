@@ -109,5 +109,34 @@ public class MonopatinService {
         return monopatinRepository.getAllMonopatines();
     }
 
+    private double calcularDistancia(double lat1, double lon1, double lat2, double lon2) {
+        // Método para calcular la distancia entre dos puntos (Fórmula de Haversine)
+        final int R = 6371000; // Radio de la tierra en metros
 
+        double lat1Rad = Math.toRadians(lat1);
+        double lat2Rad = Math.toRadians(lat2);
+        double deltaLat = Math.toRadians(lat2 - lat1);
+        double deltaLon = Math.toRadians(lon2 - lon1);
+
+        double a = Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
+                Math.cos(lat1Rad) * Math.cos(lat2Rad) *
+                        Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return R * c; // distancia en metros
+    }
+
+
+    public List<MonopatinDTO> getAllNearbyScooters(double latitud, double longitud, double radioMetros) {
+        List<Monopatin> monopatinesDisponibles = monopatinRepository.getAllAvailableScooters();
+    List<MonopatinDTO> resultado = new ArrayList<>();
+        for (Monopatin monopatin : monopatinesDisponibles) {
+            double distancia = calcularDistancia(monopatin.getLatitud(), monopatin.getLongitud(), latitud, longitud);
+            if(distancia <= radioMetros) {
+                resultado.add(new MonopatinDTO(monopatin.getParada_id(), monopatin.getEstado()));
+            }
+        }
+        return resultado;
+    }
 }
