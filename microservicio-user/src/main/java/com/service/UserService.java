@@ -6,6 +6,7 @@ import com.dto.UserDTO;
 import com.dto.UsuarioViajeCountDTO;
 import com.entity.User;
 import com.utils.Roles;
+import com.utils.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.repository.UserRepository;
@@ -82,7 +83,8 @@ public class UserService {
     }
 
     public void delete(Long id) {
-        repo.deleteById(id);
+        User user = repo.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        repo.delete(user);
     }
 
     public List<UserDTO> getAll() {
@@ -98,7 +100,7 @@ public class UserService {
 
     public void update(Long id, UserDTO updatedUser) {
         User existingUser = repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("No existe el usuario con el id: " + id));
+                .orElseThrow(() -> new UserNotFoundException(id));
 
         if(updatedUser.getName() != null) existingUser.setName(updatedUser.getName());
         if(updatedUser.getSurname() != null) existingUser.setSurname(updatedUser.getSurname());

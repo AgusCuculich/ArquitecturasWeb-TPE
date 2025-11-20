@@ -4,16 +4,14 @@ import com.dto.ReporteTarifaDTO;
 import com.dto.UserDTO;
 import com.dto.UsuarioViajeCountDTO;
 import com.entity.User;
+import com.utils.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import com.service.UserService;
-
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -32,8 +30,9 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public Optional<UserDTO> getById(@PathVariable("id") Long id){
-        return service.fetchById(id);
+    public UserDTO getById(@PathVariable("id") Long id) {
+        return service.fetchById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
     }
 
     @GetMapping("/ranking")
