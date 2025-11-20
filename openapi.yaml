@@ -1,0 +1,618 @@
+openapi: 3.0.0
+info:
+  title: Trabajo Práctico Especial - Arquitecturas Web
+  description: API para la gestion de alquileres de monopatines
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+
+
+tags:
+  - name: Monopatines
+    description: Operaciones sobre monopatines
+  - name: Mantenimientos
+    description: Operaciones sobre mantenimientos
+  - name: Paradas
+    description: Operaciones sobre paradas
+
+paths:
+  /monopatines/debug:
+    get:
+      tags:
+        - Monopatines
+      summary: Obtener todos los monopatines (Debug)
+      description: Retorna lista completa de monopatines sin filtros, solo para debugging
+      responses:
+        '200':
+          description: Lista obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Monopatin'
+
+  /monopatines/{id}:
+    get:
+      tags:
+        - Monopatines
+      summary: Obtener monopatín por ID
+      description: Retorna la información de un monopatín específico
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del monopatín
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '200':
+          description: Monopatín encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MonopatinDTO'
+        '404':
+          description: Monopatín no encontrado
+
+    delete:
+      tags:
+        - Monopatines
+      summary: Eliminar monopatín
+      description: Elimina un monopatín del sistema por su ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del monopatín a eliminar
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '200':
+          description: Monopatín eliminado exitosamente
+        '404':
+          description: Monopatín no encontrado
+
+  /monopatines:
+    get:
+      tags:
+        - Monopatines
+      summary: Listar todos los monopatines
+      description: Retorna la lista de todos los monopatines disponibles en el sistema
+      responses:
+        '200':
+          description: Lista obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MonopatinDTO'
+
+    post:
+      tags:
+        - Monopatines
+      summary: Crear nuevo monopatín
+      description: Registra un nuevo monopatín en el sistema
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Monopatin'
+            example:
+              parada_id: 1
+              latitud: -34.603500
+              longitud: -58.381700
+              estado: DISPONIBLE
+      responses:
+        '201':
+          description: Monopatín creado exitosamente
+        '400':
+          description: Datos inválidos
+
+  /monopatines/reporte:
+    get:
+      tags:
+        - Monopatines
+      summary: Generar reporte de uso de monopatines
+      description: Genera un reporte de uso de monopatines en un rango de fechas, opcionalmente puede incluir pausas
+      parameters:
+        - name: inicio
+          in: query
+          required: true
+          description: Fecha de inicio del reporte (formato yyyy-MM-dd)
+          schema:
+            type: string
+            format: date
+            example: "2024-01-01"
+        - name: fin
+          in: query
+          required: true
+          description: Fecha de fin del reporte (formato yyyy-MM-dd)
+          schema:
+            type: string
+            format: date
+            example: "2024-11-12"
+        - name: incluirPausas
+          in: query
+          required: false
+          description: Indica si se deben incluir las pausas en el reporte
+          schema:
+            type: boolean
+            default: false
+            example: true
+      responses:
+        '200':
+          description: Reporte generado exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReporteMonopatinesDTO'
+        '400':
+          description: Parámetros de fecha inválidos
+
+  /monopatines/{id}/parada/{parada_id}:
+    put:
+      tags:
+        - Monopatines
+      summary: Ubicar monopatín en parada
+      description: Asigna un monopatín a una parada específica
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del monopatín
+          schema:
+            type: integer
+            format: int64
+            example: 1
+        - name: parada_id
+          in: path
+          required: true
+          description: ID de la parada destino
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '200':
+          description: Monopatín ubicado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MonopatinDTO'
+        '404':
+          description: Monopatín o parada no encontrados
+
+  /monopatines/{id}/estado:
+    put:
+      tags:
+        - Monopatines
+      summary: Actualizar estado del monopatín
+      description: Cambia el estado operativo de un monopatín
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del monopatín
+          schema:
+            type: integer
+            format: int64
+            example: 1
+        - name: estado
+          in: query
+          required: true
+          description: Nuevo estado del monopatín
+          schema:
+            $ref: '#/components/schemas/EstadoMonopatin'
+      responses:
+        '200':
+          description: Estado actualizado exitosamente
+        '404':
+          description: Monopatín no encontrado
+
+  /monopatines/stats:
+    get:
+      tags:
+        - Monopatines
+      summary: Obtener monopatines con cierta cantidad de viajes en un determinado año
+      description: Retorna monopatines con más de X viajes en un año específico
+      parameters:
+        - name: anio
+          in: query
+          required: true
+          description: Año en el que buscar los viajes
+          schema:
+            type: integer
+            example: 2024
+        - name: viajes
+          in: query
+          required: true
+          description: Cantidad mínima de viajes
+          schema:
+            type: integer
+            example: 2
+      responses:
+        '200':
+          description: Estadísticas obtenidas exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MonopatinDTO'
+
+  /monopatines/nearby:
+    get:
+      tags:
+        - Monopatines
+      summary: Buscar monopatines cercanos
+      description: Encuentra monopatines disponibles dentro de un radio específico
+      parameters:
+        - name: latitud
+          in: query
+          required: true
+          description: Latitud de la ubicación
+          schema:
+            type: number
+            format: double
+            example: -34.603722
+        - name: longitud
+          in: query
+          required: true
+          description: Longitud de la ubicación
+          schema:
+            type: number
+            format: double
+            example: -58.381592
+        - name: radio
+          in: query
+          required: true
+          description: Radio de búsqueda en metros
+          schema:
+            type: number
+            format: double
+            example: 500
+      responses:
+        '200':
+          description: Monopatines cercanos encontrados
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MonopatinDTO'
+
+  /mantenimientos/:
+    get:
+      tags:
+        - Mantenimientos
+      summary: Listar todos los mantenimientos
+      description: Retorna la lista completa de todos los mantenimientos registrados en el sistema
+      responses:
+        '200':
+          description: Lista obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MantenimientoDTO'
+
+  /mantenimientos/registrar:
+    post:
+      tags:
+        - Mantenimientos
+      summary: Registrar nuevo mantenimiento
+      description: Registra un nuevo mantenimiento para un monopatín y actualiza su estado a MANTENIMIENTO
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MantenimientoDTO'
+            example:
+              fecha_inicio: "2025-11-12"
+              fecha_fin: "2025-11-13"
+              monopatin_id: 1
+              encargado_id: 1
+      responses:
+        '201':
+          description: Mantenimiento registrado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mantenimiento'
+        '400':
+          description: Datos inválidos
+        '404':
+          description: Monopatín no encontrado
+
+  /mantenimientos/eliminar/{id}:
+    delete:
+      tags:
+        - Mantenimientos
+      summary: Eliminar mantenimiento
+      description: Elimina un registro de mantenimiento por su ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del mantenimiento a eliminar
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '200':
+          description: Mantenimiento eliminado exitosamente
+        '404':
+          description: Mantenimiento no encontrado
+
+  /paradas/{id}:
+    get:
+      tags:
+        - Paradas
+      summary: Obtener parada por ID
+      description: Retorna la información de una parada específica
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la parada
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '200':
+          description: Parada encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParadaDTO'
+        '404':
+          description: Parada no encontrada
+
+    delete:
+      tags:
+        - Paradas
+      summary: Eliminar parada
+      description: Elimina una parada del sistema por su ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la parada a eliminar
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '200':
+          description: Parada eliminada exitosamente
+        '404':
+          description: Parada no encontrada
+
+  /paradas/:
+    get:
+      tags:
+        - Paradas
+      summary: Listar todas las paradas
+      description: Retorna la lista de todas las paradas disponibles en el sistema
+      responses:
+        '200':
+          description: Lista obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ParadaDTO'
+
+  /paradas:
+    post:
+      tags:
+        - Paradas
+      summary: Crear nueva parada
+      description: Registra una nueva parada en el sistema
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Parada'
+            example:
+              latitud: -34.6037
+              longitud: -58.3816
+      responses:
+        '201':
+          description: Parada creada exitosamente
+        '400':
+          description: Datos inválidos
+
+components:
+  schemas:
+    Monopatin:
+      type: object
+      required:
+        - latitud
+        - longitud
+        - estado
+      properties:
+        monopatin_id:
+          type: integer
+          format: int64
+          description: ID único del monopatín
+          example: 1
+        parada_id:
+          type: integer
+          format: int64
+          description: ID de la parada donde está ubicado
+          example: 5
+          nullable: true
+        latitud:
+          type: number
+          format: double
+          description: Latitud de la ubicación del monopatín
+          example: -34.6037
+        longitud:
+          type: number
+          format: double
+          description: Longitud de la ubicación del monopatín
+          example: -58.3816
+        estado:
+          $ref: '#/components/schemas/EstadoMonopatin'
+
+    MonopatinDTO:
+      type: object
+      properties:
+        parada_id:
+          type: integer
+          format: int64
+          description: ID de la parada
+          example: 5
+          nullable: true
+        estado:
+          $ref: '#/components/schemas/EstadoMonopatin'
+
+    ReporteMonopatinesDTO:
+      type: object
+      properties:
+        idmonopatin:
+          type: integer
+          format: int64
+          description: ID del monopatín
+          example: 1
+        kilometros:
+          type: number
+          format: double
+          description: Kilómetros recorridos en el período
+          example: 125.5
+        requiereMantenimiento:
+          type: string
+          description: Indica si requiere mantenimiento
+          enum: [SI, NO]
+          example: SI
+        pausa:
+          type: integer
+          format: int64
+          description: Tiempo de pausa en minutos (solo si se incluyen pausas)
+          example: 45
+          nullable: true
+
+    EstadoMonopatin:
+      type: string
+      description: Estado operativo del monopatín
+      enum:
+        - DISPONIBLE
+        - OCUPADO
+        - MANTENIMIENTO
+      example: DISPONIBLE
+
+    Mantenimiento:
+      type: object
+      required:
+        - fecha_inicio
+        - monopatin_id
+        - encargado_id
+      properties:
+        mantenimiento_id:
+          type: integer
+          format: int64
+          description: ID único del mantenimiento
+          example: 1
+        fecha_inicio:
+          type: string
+          format: date-time
+          description: Fecha y hora de inicio del mantenimiento
+          example: "2025-11-12"
+        fecha_fin:
+          type: string
+          format: date-time
+          description: Fecha y hora de fin del mantenimiento
+          example: "2025-11-13"
+          nullable: true
+        monopatin_id:
+          type: integer
+          format: int64
+          description: ID del monopatín en mantenimiento
+          example: 1
+        encargado_id:
+          type: integer
+          format: int64
+          description: ID del encargado del mantenimiento
+          example: 5
+
+    MantenimientoDTO:
+      type: object
+      required:
+        - fecha_inicio
+        - monopatin_id
+        - encargado_id
+      properties:
+        fecha_inicio:
+          type: string
+          format: date-time
+          description: Fecha y hora de inicio del mantenimiento
+          example: "2025-11-12"
+        fecha_fin:
+          type: string
+          format: date-time
+          description: Fecha y hora de fin del mantenimiento
+          example: "2025-11-13"
+          nullable: true
+        monopatin_id:
+          type: integer
+          format: int64
+          description: ID del monopatín en mantenimiento
+          example: 1
+        encargado_id:
+          type: integer
+          format: int64
+          description: ID del encargado del mantenimiento
+          example: 5
+
+    Parada:
+      type: object
+      required:
+        - latitud
+        - longitud
+      properties:
+        parada_id:
+          type: integer
+          format: int64
+          description: ID único de la parada
+          example: 1
+        latitud:
+          type: number
+          format: double
+          description: Latitud de la ubicación de la parada
+          example: -34.6037
+        longitud:
+          type: number
+          format: double
+          description: Longitud de la ubicación de la parada
+          example: -58.3816
+
+    ParadaDTO:
+      type: object
+      properties:
+        latitud:
+          type: number
+          format: double
+          description: Latitud de la ubicación de la parada
+          example: -34.6037
+        longitud:
+          type: number
+          format: double
+          description: Longitud de la ubicación de la parada
+          example: -58.3816
