@@ -16,11 +16,11 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User,Long> {
 
     // Devolver listado DTO de todos los usuarios
-    @Query("SELECT new com.dto.UserDTO(u.name, u.surname, u.mobile, u.rol, u.tipo) FROM User u")
+    @Query("SELECT new com.dto.UserDTO(u.username, u.surname, u.mobile, u.rol, u.tipo) FROM User u")
     List<UserDTO> getAll();
 
     // Devuelve DTO del usuario cuyo id coincida
-    @Query("SELECT new com.dto.UserDTO(u.name, u.surname, u.mobile, u.rol, u.tipo) FROM User u WHERE u.id = :id")
+    @Query("SELECT new com.dto.UserDTO(u.username, u.surname, u.mobile, u.rol, u.tipo) FROM User u WHERE u.id = :id")
     Optional<UserDTO> fetchById(@Param("id") Long id);
 
 
@@ -39,4 +39,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
     @Transactional
     @Query(value = "INSERT INTO usuario_account (usuario_id, account_id) VALUES (:userId, :accountId)", nativeQuery = true)
     void linkAccount(@Param("userId") Long userId, @Param("accountId") Long accountId);
+
+
+    User findByName(String name);
 }

@@ -22,7 +22,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
-    private String name;
+    private String username;
+    @Column
+    private String password;
     @Column
     private String surname;
     @Column
@@ -43,7 +45,7 @@ public class User {
     private List<Account> accounts;
 
     public void setName(String name) {
-        this.name = name;
+        this.username = name;
     }
 
     public void setSurname(String surname) {

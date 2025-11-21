@@ -49,7 +49,7 @@ public class UserService {
 
             return new UsuarioViajeCountDTO(
                     u.getId(),
-                    u.getName(),
+                    u.getUsername(),
                     u.getSurname(),
                     u.getRol(),  // convertir enum a String
                     cantidadViajes

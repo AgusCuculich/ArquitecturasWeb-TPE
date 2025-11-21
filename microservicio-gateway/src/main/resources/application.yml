@@ -6,23 +6,40 @@ spring:
     name: api-gateway
   cloud:
     gateway:
+      default-filters:
+        - AddResponseHeader=X-Gateway, SimpleSpringGateway
       routes:
+        # 1. Ruta de LOGIN (PÚBLICA) - Sin filtro de seguridad
+        - id: auth-login
+          uri: http://localhost:8088
+          predicates:
+            - Path=/users/login # Asumiendo que aquí está tu login
+
+        # 2. Rutas PROTEGIDAS - Con el filtro JwtAuthentication
         - id: users
           uri: http://localhost:8088
           predicates:
             - Path=/users/**, /accounts/**
+          filters:
+            - JwtAuthentication # <-- Nombre de la clase del filtro (sin el sufijo Filter)
+
         - id: rides
           uri: http://localhost:8089
           predicates:
             - Path=/rides/**, /fees/**
+          filters:
+            - JwtAuthentication
+
         - id: transporte
           uri: http://localhost:8081
           predicates:
             - Path=/monopatines/**, /paradas/**
+          filters:
+            - JwtAuthentication
+
         - id: mantenimiento
           uri: http://localhost:8082
           predicates:
             - Path=/mantenimiento/**
-
-      default-filters:
-        - AddResponseHeader=X-Gateway, SimpleSpringGateway
+          filters:
+            - JwtAuthentication
