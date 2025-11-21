@@ -45,7 +45,7 @@ public class LoginController {
     }
 
     private String getJWTToken(String username, String role) {
-        String secretKey = "mySecretKey"; // ¡Misma clave que en el Gateway!
+        String secretKey = "JksNMh7894ISjuh78945kljIOU89543jklfd894532jkld90432jklfds90432jkldsf90432"; // ¡Misma clave que en el Gateway!
 
         List<GrantedAuthority> grantedAuthorities = AuthorityUtils
                 .commaSeparatedStringToAuthorityList(role);
@@ -58,8 +58,8 @@ public class LoginController {
                                 .map(GrantedAuthority::getAuthority)
                                 .collect(Collectors.toList()))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 600000)) // 10 minutos
-                .signWith(SignatureAlgorithm.HS512, secretKey.getBytes())
+                .setExpiration(new Date(System.currentTimeMillis() + 600000))
+                .signWith(SignatureAlgorithm.HS512, secretKey.getBytes()) // <--- Aquí usa la nueva clave larga
                 .compact();
 
         return "Bearer " + token;

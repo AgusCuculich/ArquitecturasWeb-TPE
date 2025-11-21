@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 public class JwtAuthenticationGatewayFilterFactory extends AbstractGatewayFilterFactory<JwtAuthenticationGatewayFilterFactory.Config> {
 
     private final String PREFIX = "Bearer ";
-    private final String SECRET = "mySecretKey"; // Misma clave que en el Login
+    private final String SECRET = "JksNMh7894ISjuh78945kljIOU89543jklfd894532jkld90432jklfds90432jkldsf90432";// Misma clave que en el Login
 
     public JwtAuthenticationGatewayFilterFactory() {
         super(Config.class);
