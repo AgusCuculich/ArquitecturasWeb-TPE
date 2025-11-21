@@ -41,5 +41,5 @@ public interface UserRepository extends JpaRepository<User,Long> {
     void linkAccount(@Param("userId") Long userId, @Param("accountId") Long accountId);
 
 
-    User findByName(String name);
+    User findByUsername(String username);
 }

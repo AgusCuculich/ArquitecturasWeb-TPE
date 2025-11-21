@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -23,12 +25,27 @@ public class LoginConfiguration {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/users/login").permitAll() // Por si entra por gateway
+                        // 1. PERMITIR POST para /users (CREACIÓN DE USUARIO) <--- LÍNEA AÑADIDA
+                        .requestMatchers(HttpMethod.POST, "/users").permitAll()
+
+                        // 2. PERMITIR POST para /users/login (INICIO DE SESIÓN)
+                        .requestMatchers(HttpMethod.POST, "/users/login").permitAll()
+
+                        // Por si acaso, permitimos el /login sin /users (solo si existe esa ruta)
+                        // .requestMatchers(HttpMethod.POST, "/login").permitAll()
+
+                        // Cualquier otra petición debe estar autenticada
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);;
+                // Asegúrate de que este filtro solo se añada si es un endpoint que requiere autenticación,
+                // pero si lo dejas aquí, está bien ya que el filtro puede ignorar rutas permitidas.
+                .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

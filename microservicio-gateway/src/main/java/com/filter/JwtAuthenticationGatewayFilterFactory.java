@@ -25,36 +25,52 @@ public class JwtAuthenticationGatewayFilterFactory extends AbstractGatewayFilter
 
     @Override
     public GatewayFilter apply(Config config) {
-        return (exchange, chain) -> {
-            // 1. Validar que exista el header
-            if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
-                return onError(exchange, HttpStatus.UNAUTHORIZED, "No hay header de autorización");
-            }
+            return (exchange, chain) -> {
 
-            String authHeader = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+                // 🛑 LÓGICA DE EXCLUSIÓN AÑADIDA 🛑
+                String path = exchange.getRequest().getURI().getPath();
 
-            // 2. Validar formato Bearer
-            if (authHeader == null || !authHeader.startsWith(PREFIX)) {
-                return onError(exchange, HttpStatus.UNAUTHORIZED, "Formato de token inválido");
-            }
+                // Definir las rutas públicas (deben coincidir con las reglas del SecurityConfig)
+                // Se utiliza startsWith porque la ruta puede ser /users, /users/, /users?param=x
+                boolean isPublicRoute =
+                        path.startsWith("/users") && exchange.getRequest().getMethod().matches("POST");
 
-            // 3. Validar Token y Firma
-            try {
-                String token = authHeader.replace(PREFIX, "");
+                // Excluir la ruta específica de login
+                boolean isLogin = path.equals("/users/login") || path.equals("/users/login/");
 
-                // Validación tal cual el PDF pero sin "getBody()" final para solo validar firma
-                Jwts.parser()
-                        .setSigningKey(SECRET.getBytes())
-                        .parseClaimsJws(token);
+                if (isPublicRoute || isLogin) {
+                    // Si la ruta es pública, saltamos la verificación del token y dejamos pasar.
+                    return chain.filter(exchange);
+                }
+                // 🛑 FIN LÓGICA DE EXCLUSIÓN 🛑
 
-                // Si pasa, dejamos pasar la petición al microservicio destino
-                return chain.filter(exchange);
+                // 1. Validar que exista el header (Solo si la ruta no es pública)
+                if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
+                    return onError(exchange, HttpStatus.UNAUTHORIZED, "No hay header de autorización");
+                }
+                // ... el resto de la lógica del filtro sigue igual ...
 
-            } catch (Exception e) {
-                // Si falla (expirado, firma mal, etc), devolvemos 403
-                return onError(exchange, HttpStatus.FORBIDDEN, "Token inválido o expirado");
-            }
-        };
+                String authHeader = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+
+                // 2. Validar formato Bearer
+                if (authHeader == null || !authHeader.startsWith(PREFIX)) {
+                    return onError(exchange, HttpStatus.UNAUTHORIZED, "Formato de token inválido");
+                }
+
+                // 3. Validar Token y Firma
+                try {
+                    // ... (lógica de verificación del token)
+                    String token = authHeader.replace(PREFIX, "");
+                    Jwts.parser()
+                            .setSigningKey(SECRET.getBytes())
+                            .parseClaimsJws(token);
+
+                    return chain.filter(exchange);
+
+                } catch (Exception e) {
+                    return onError(exchange, HttpStatus.FORBIDDEN, "Token inválido o expirado");
+                }
+            };
     }
 
     // Método auxiliar para manejar errores en modo Reactivo (Mono)

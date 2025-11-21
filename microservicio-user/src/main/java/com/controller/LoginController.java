@@ -29,7 +29,7 @@ public class LoginController {
     @PostMapping("/login")
     public Token login(@RequestBody LoginInfo login) {
         // 1. Buscamos el usuario en tu repositorio por su nombre
-        User u = userRepository.findByName(login.getUsername());
+        User u = userRepository.findByUsername(login.getUsername());
 
         // 2. Verificamos si existe y si la contraseña coincide
         // Nota: u.getPassword() funcionará una vez agregues el campo a la entidad

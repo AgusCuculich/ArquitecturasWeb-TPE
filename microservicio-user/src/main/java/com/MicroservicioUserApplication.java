@@ -23,7 +23,7 @@ public class MicroservicioUserApplication {
     @Bean
     CommandLineRunner initData(UserRepository repo) {
         return args -> {
-            if (repo.findByName("admin") == null) {
+            if (repo.findByUsername("admin") == null) {
                 User admin = new User();
                 admin.setName("admin");
                 admin.setSurname("Admin");

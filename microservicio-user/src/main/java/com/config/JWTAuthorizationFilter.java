@@ -18,14 +18,24 @@ import java.util.stream.Collectors;
 @Component
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
-    // Constantes definidas en la documentación [cite: 218, 235]
     private final String HEADER = "Authorization";
     private final String PREFIX = "Bearer ";
-    private final String SECRET = "mySecretKey"; // Debe coincidir con la usada en LoginController
+    private final String SECRET = "mySecretKey";
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String uri = request.getRequestURI();
+        String method = request.getMethod();
 
+        // Lista de rutas públicas a excluir del filtro JWT
+        // Es la forma más limpia de excluir rutas.
+        return method.equals("POST") && (uri.contains("/users/login") || uri.contains("/users"));
+    }
+
+    // 🛑 MÉTODO DOFILTERINTERNAL (El que se ejecuta solo si shouldNotFilter es false)
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
+
         try {
             if (existeJWTToken(request, response)) {
                 Claims claims = validateToken(request);
@@ -35,19 +45,19 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.clearContext();
                 }
             } else {
+                // Si la ruta requiere autenticación y no hay token, el contexto se limpia.
+                // Spring Security tomará el control aquí y devolverá 403/401 si la ruta no era permitida.
                 SecurityContextHolder.clearContext();
             }
             chain.doFilter(request, response);
         } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException e) {
-            // En caso de error en el token, respondemos con Forbidden (403) [cite: 243]
+            // En caso de error en el token, respondemos con Forbidden (403)
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            ((HttpServletResponse) response).sendError(HttpServletResponse.SC_FORBIDDEN, e.getMessage());
+            ((HttpServletResponse) response).sendError(HttpServletResponse.SC_FORBIDDEN, "Token inválido o expirado");
         }
     }
-
     private Claims validateToken(HttpServletRequest request) {
         String jwtToken = request.getHeader(HEADER).replace(PREFIX, "");
-        // Valida la firma y retorna los datos (claims) [cite: 250]
         return Jwts.parser().setSigningKey(SECRET.getBytes()).parseClaimsJws(jwtToken).getBody();
     }
 
@@ -55,7 +65,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         @SuppressWarnings("unchecked")
         List<String> authorities = (List<String>) claims.get("authorities");
 
-        // Configura la autenticación en el contexto de Spring Security [cite: 252-260]
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
                 claims.getSubject(),
                 null,

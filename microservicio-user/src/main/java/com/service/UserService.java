@@ -8,6 +8,7 @@ import com.entity.User;
 import com.utils.Roles;
 import com.utils.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.repository.UserRepository;
 
@@ -22,6 +23,7 @@ public class UserService {
     private final UserRepository repo;
 
     private final RideClient rideClient;
+    private final PasswordEncoder passwordEncoder;
 
     public List<UsuarioViajeCountDTO> rankingPorPeriodoYRol(Date desde, Date hasta, String rol) {
 
@@ -73,7 +75,26 @@ public class UserService {
     public void save(UserDTO dto){
         User user = new User();
 
-        user.setName(dto.getName());
+        // 1. ASIGNAR EL NOMBRE DE USUARIO (username) Y LA CONTRASEÑA
+        // Nota: Asumimos que el DTO tiene un método getUsername() y getPassword().
+
+        String rawPassword = dto.getPassword();
+
+        if (rawPassword == null || rawPassword.isEmpty()) {
+            // Previene crear un usuario sin contraseña, crucial para la seguridad.
+            throw new IllegalArgumentException("La contraseña es obligatoria para crear un usuario.");
+        }
+
+        // Asignación del nombre de usuario (el campo correcto en la entidad es username, no name)
+        // Recordatorio: El setter setName(String name) en tu entidad realmente asigna al campo username.
+        // Si tienes setUsername() en tu entidad, úsalo directamente para mayor claridad.
+        user.setName(dto.getUsername()); // Esto mapea el "name" del DTO al campo 'username' de la Entidad
+
+        // CODIFICACIÓN (HASHING)
+        String encodedPassword = passwordEncoder.encode(rawPassword);
+        user.setPassword(encodedPassword); // Establece el hash codificado
+
+        // 2. ASIGNAR EL RESTO DE CAMPOS
         user.setSurname(dto.getSurname());
         user.setMobile(dto.getMobile());
         user.setRol(dto.getRol());
@@ -102,7 +123,7 @@ public class UserService {
         User existingUser = repo.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
 
-        if(updatedUser.getName() != null) existingUser.setName(updatedUser.getName());
+        if(updatedUser.getUsername() != null) existingUser.setName(updatedUser.getUsername());
         if(updatedUser.getSurname() != null) existingUser.setSurname(updatedUser.getSurname());
         if(updatedUser.getMobile() != null) existingUser.setMobile(updatedUser.getMobile());
         if(updatedUser.getRol() != null) existingUser.setRol(updatedUser.getRol());
