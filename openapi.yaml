@@ -15,6 +15,14 @@ tags:
     description: Operaciones sobre mantenimientos
   - name: Paradas
     description: Operaciones sobre paradas
+  - name: Rides y Fees
+    description: Operaciones sobre los viajes (rides) y tarifas (fees).
+  - name: Users
+    description: Gestión de usuarios, cuentas y autenticación.
+  - name: Accounts
+    description: Gestión de cuentas bancarias asociadas a los usuarios.
+  - name: Reportes y Estadísticas
+    description: Endpoints para generar reportes y obtener estadísticas de uso.
 
 paths:
   /monopatines/debug:
@@ -439,6 +447,852 @@ paths:
         '400':
           description: Datos inválidos
 
+  ## --- Rutas del Microservicio de Rides ---
+  /rides:
+    get:
+      tags:
+        - Rides y Fees
+      summary: Listar todos los viajes
+      description: Retorna la lista de todos los viajes registrados.
+      responses:
+        '200':
+          description: Lista de viajes obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RideDTO'
+
+    post:
+      tags:
+        - Rides y Fees
+      summary: Crear nuevo viaje
+      description: Registra un nuevo viaje de monopatín.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RideDTO'
+            example:
+              startDate: "2025-11-21T10:00:00Z"
+              endDate: "2025-11-21T10:45:00Z"
+              breakTime: "00:05:00"
+              kilometers: 5.2
+              idUser: 101
+              idScooter: 1
+      responses:
+        '201':
+          description: Viaje creado exitosamente
+        '400':
+          description: Datos inválidos
+
+  /rides/debug:
+    get:
+      tags:
+        - Rides y Fees
+      summary: Obtener todos los viajes (Debug)
+      description: Retorna la lista completa de viajes con todos los campos (incluyendo el ID de MongoDB), solo para debugging.
+      responses:
+        '200':
+          description: Lista obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ride'
+
+  /rides/{id}:
+    get:
+      tags:
+        - Rides y Fees
+      summary: Obtener viaje por ID
+      description: Retorna la información de un viaje específico.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del viaje (MongoDB ObjectId)
+          schema:
+            type: string
+            example: "60c72b2f9c18c454226f9a76"
+      responses:
+        '200':
+          description: Viaje encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RideDTO'
+        '404':
+          description: Viaje no encontrado
+
+    put:
+      tags:
+        - Rides y Fees
+      summary: Actualizar viaje
+      description: Actualiza la información completa de un viaje por su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del viaje (MongoDB ObjectId)
+          schema:
+            type: string
+            example: "60c72b2f9c18c454226f9a76"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RideDTO'
+      responses:
+        '200':
+          description: Viaje actualizado exitosamente
+        '404':
+          description: Viaje no encontrado
+        '400':
+          description: Datos de actualización inválidos
+
+    delete:
+      tags:
+        - Rides y Fees
+      summary: Eliminar viaje
+      description: Elimina un viaje del sistema por su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del viaje (MongoDB ObjectId)
+          schema:
+            type: string
+            example: "60c72b2f9c18c454226f9a76"
+      responses:
+        '204':
+          description: Viaje eliminado exitosamente (No Content)
+        '404':
+          description: Viaje no encontrado
+
+  /rides/reporte:
+    get:
+      tags:
+        - Reportes y Estadísticas
+      summary: Generar reporte de uso
+      description: Genera un reporte detallado del uso de monopatines en un rango de fechas, opcionalmente incluyendo pausas.
+      parameters:
+        - name: inicio
+          in: query
+          required: true
+          description: Fecha de inicio del reporte (formato yyyy-MM-dd)
+          schema:
+            type: string
+            format: date
+            example: "2024-01-01"
+        - name: fin
+          in: query
+          required: true
+          description: Fecha de fin del reporte (formato yyyy-MM-dd)
+          schema:
+            type: string
+            format: date
+            example: "2024-11-21"
+        - name: incluirPausas
+          in: query
+          required: false
+          description: Indica si se deben incluir las pausas en el reporte.
+          schema:
+            type: boolean
+            default: false
+            example: true
+      responses:
+        '200':
+          description: Reporte generado exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReporteDTO'
+        '400':
+          description: Parámetros de fecha inválidos
+
+  /rides/ranking-usuarios:
+    get:
+      tags:
+        - Reportes y Estadísticas
+      summary: Ranking de usuarios por cantidad de viajes
+      description: Obtiene un ranking de usuarios basado en la cantidad de viajes realizados en un rango de fechas.
+      parameters:
+        - name: desde
+          in: query
+          required: true
+          description: Fecha de inicio del período (formato yyyy-MM-dd)
+          schema:
+            type: string
+            format: date
+            example: "2024-01-01"
+        - name: hasta
+          in: query
+          required: true
+          description: Fecha de fin del período (formato yyyy-MM-dd)
+          schema:
+            type: string
+            format: date
+            example: "2024-11-21"
+      responses:
+        '200':
+          description: Ranking obtenido exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UsuarioViajeCountDTO'
+        '400':
+          description: Parámetros de fecha inválidos
+
+  /rides/stats:
+    get:
+      tags:
+        - Reportes y Estadísticas
+      summary: Monopatines con cierta cantidad mínima de viajes en un año
+      description: Retorna la lista de monopatines que tuvieron más de X viajes en un año específico.
+      parameters:
+        - name: anio
+          in: query
+          required: true
+          description: Año en el que buscar los viajes
+          schema:
+            type: integer
+            example: 2024
+        - name: viajes
+          in: query
+          required: true
+          description: Cantidad mínima de viajes
+          schema:
+            type: integer
+            example: 5
+      responses:
+        '200':
+          description: Estadísticas obtenidas exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RideCountResult'
+
+  /rides/scooterUse/{userId}:
+    get:
+      tags:
+        - Reportes y Estadísticas
+      summary: Uso de monopatines por usuario y período
+      description: Obtiene el resumen de uso de monopatines para un usuario específico en un rango de fechas.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: ID del usuario
+          schema:
+            type: integer
+            format: int64
+            example: 101
+        - name: startDate
+          in: query
+          required: true
+          description: Fecha de inicio del período (formato yyyy-MM-dd)
+          schema:
+            type: string
+            format: date
+            example: "2024-01-01"
+        - name: endDate
+          in: query
+          required: true
+          description: Fecha de fin del período (formato yyyy-MM-dd)
+          schema:
+            type: string
+            format: date
+            example: "2024-11-21"
+      responses:
+        '200':
+          description: Resumen de uso obtenido exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScootersUseDTO'
+        '404':
+          description: Usuario no encontrado o sin datos de uso en el período
+
+  ## --- Rutas del Microservicio de Fees (Tarifas) ---
+  /fees:
+    get:
+      tags:
+        - Rides y Fees
+      summary: Listar todas las tarifas
+      description: Retorna la lista de todas las tarifas registradas.
+      responses:
+        '200':
+          description: Lista de tarifas obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FeeDTO'
+
+    post:
+      tags:
+        - Rides y Fees
+      summary: Crear nueva tarifa
+      description: Registra una nueva tarifa en el sistema.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeeDTO'
+            example:
+              price: 50.5
+              startDate: "2025-01-01T00:00:00Z"
+              endDate: null
+      responses:
+        '201':
+          description: Tarifa creada exitosamente
+        '400':
+          description: Datos inválidos
+
+  /fees/debug:
+    get:
+      tags:
+        - Rides y Fees
+      summary: Obtener todas las tarifas (Debug)
+      description: Retorna la lista completa de tarifas con ID, solo para debugging.
+      responses:
+        '200':
+          description: Lista obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Fee'
+
+  /fees/{id}:
+    get:
+      tags:
+        - Rides y Fees
+      summary: Obtener tarifa por ID
+      description: Retorna la información de una tarifa específica.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la tarifa (MongoDB ObjectId)
+          schema:
+            type: string
+            example: "60c72b2f9c18c454226f9a77"
+      responses:
+        '200':
+          description: Tarifa encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeeDTO'
+        '404':
+          description: Tarifa no encontrada
+
+    put:
+      tags:
+        - Rides y Fees
+      summary: Actualizar tarifa
+      description: Actualiza la información completa de una tarifa por su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la tarifa (MongoDB ObjectId)
+          schema:
+            type: string
+            example: "60c72b2f9c18c454226f9a77"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeeDTO'
+      responses:
+        '200':
+          description: Tarifa actualizada exitosamente
+        '404':
+          description: Tarifa no encontrada
+
+    delete:
+      tags:
+        - Rides y Fees
+      summary: Eliminar tarifa
+      description: Elimina una tarifa del sistema por su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la tarifa (MongoDB ObjectId)
+          schema:
+            type: string
+            example: "60c72b2f9c18c454226f9a77"
+      responses:
+        '204':
+          description: Tarifa eliminada exitosamente (No Content)
+        '404':
+          description: Tarifa no encontrada
+
+  /fees/facturacion:
+    get:
+      tags:
+        - Reportes y Estadísticas
+      summary: Calcular facturación total por tarifas
+      description: Calcula el monto total de tarifas facturadas en un rango de fechas.
+      parameters:
+        - name: start
+          in: query
+          required: true
+          description: Fecha de inicio para la facturación (formato yyyy-MM-dd)
+          schema:
+            type: string
+            format: date
+            example: "2024-01-01"
+        - name: end
+          in: query
+          required: true
+          description: Fecha de fin para la facturación (formato yyyy-MM-dd)
+          schema:
+            type: string
+            format: date
+            example: "2024-11-21"
+      responses:
+        '200':
+          description: Facturación total obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: number
+                format: double
+                example: 12500.75
+        '400':
+          description: Parámetros de fecha inválidos
+  ## --- Fin Rutas del Microservicio de Fees ---
+
+  ## --- Rutas del Microservicio de Users ---
+  /users:
+    get:
+      tags:
+        - Users
+      summary: Listar todos los usuarios
+      description: Retorna la lista de todos los usuarios registrados (sin contraseña).
+      responses:
+        '200':
+          description: Lista de usuarios obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserDTO'
+
+    post:
+      tags:
+        - Users
+      summary: Crear nuevo usuario
+      description: Registra un nuevo usuario en el sistema.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+            example:
+              username: "juanperez"
+              password: "securepassword123"
+              surname: "Perez"
+              mobile: 1155554444
+              rol: ADMINISTRADOR
+              tipo: PREMIUM
+      responses:
+        '201':
+          description: Usuario creado exitosamente
+        '400':
+          description: Datos inválidos
+
+  /users/debug:
+    get:
+      tags:
+        - Users
+      summary: Obtener todos los usuarios (Debug)
+      description: Retorna la lista completa de usuarios con todos los campos (incluyendo el ID y la lista de cuentas).
+      responses:
+        '200':
+          description: Lista obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+
+  /users/{id}:
+    get:
+      tags:
+        - Users
+      summary: Obtener usuario por ID
+      description: Retorna la información de un usuario específico.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del usuario
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '200':
+          description: Usuario encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+        '404':
+          description: Usuario no encontrado
+
+    put:
+      tags:
+        - Users
+      summary: Actualizar usuario
+      description: Actualiza la información completa de un usuario por su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del usuario
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+      responses:
+        '200':
+          description: Usuario actualizado exitosamente
+        '404':
+          description: Usuario no encontrado
+
+    delete:
+      tags:
+        - Users
+      summary: Eliminar usuario
+      description: Elimina un usuario del sistema por su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del usuario a eliminar
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '204':
+          description: Usuario eliminado exitosamente (No Content)
+        '404':
+          description: Usuario no encontrado
+
+  /users/disable/{id}:
+    put:
+      tags:
+        - Users
+      summary: Deshabilitar usuario
+      description: Marca un usuario como deshabilitado (isDisabled = true).
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del usuario a deshabilitar
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '200':
+          description: Usuario deshabilitado exitosamente
+        '404':
+          description: Usuario no encontrado
+
+  /users/ranking:
+    get:
+      tags:
+        - Reportes y Estadísticas
+      summary: Ranking de usuarios por viajes y rol
+      description: Obtiene un ranking de usuarios con la cantidad de viajes realizados en un período, filtrado por Rol.
+      parameters:
+        - name: desde
+          in: query
+          required: true
+          description: Fecha de inicio del período (formato yyyy-MM-dd)
+          schema:
+            type: string
+            format: date
+            example: "2024-01-01"
+        - name: hasta
+          in: query
+          required: true
+          description: Fecha de fin del período (formato yyyy-MM-dd)
+          schema:
+            type: string
+            format: date
+            example: "2024-11-21"
+        - name: rol
+          in: query
+          required: true
+          description: Rol del usuario para filtrar el ranking.
+          schema:
+            type: string
+            $ref: '#/components/schemas/Roles'
+      responses:
+        '200':
+          description: Ranking obtenido exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UsuarioViajeCountDTO'
+        '400':
+          description: Parámetros de fecha o Rol inválidos
+
+  /users/reporte-tarifas:
+    get:
+      tags:
+        - Reportes y Estadísticas
+      summary: Reporte de facturación por tarifas y mes
+      description: Genera un reporte que resume la facturación de tarifas por mes en un rango de fechas.
+      parameters:
+        - name: desde
+          in: query
+          required: true
+          description: Fecha de inicio del período (formato yyyy-MM-dd)
+          schema:
+            type: string
+            format: date
+            example: "2024-01-01"
+        - name: hasta
+          in: query
+          required: true
+          description: Fecha de fin del período (formato yyyy-MM-dd)
+          schema:
+            type: string
+            format: date
+            example: "2024-12-31"
+      responses:
+        '200':
+          description: Reporte de tarifas generado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReporteTarifaDTO'
+        '400':
+          description: Parámetros de fecha inválidos
+
+  /users/accounts/{userId}:
+    get:
+      tags:
+        - Users
+      summary: Obtener IDs de cuentas asociadas
+      description: Retorna la lista de IDs de cuentas bancarias vinculadas a un usuario específico.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: ID del usuario
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '200':
+          description: IDs de cuentas obtenidos exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: integer
+                  format: int64
+                  example: 10
+        '404':
+          description: Usuario no encontrado
+
+  /users/{userId}/linkAccount/{accountId}:
+    post:
+      tags:
+        - Users
+      summary: Vincular cuenta a usuario
+      description: Asocia una cuenta bancaria existente a un usuario.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: ID del usuario
+          schema:
+            type: integer
+            format: int64
+            example: 1
+        - name: accountId
+          in: path
+          required: true
+          description: ID de la cuenta a vincular
+          schema:
+            type: integer
+            format: int64
+            example: 10
+      responses:
+        '200':
+          description: Cuenta vinculada exitosamente
+        '404':
+          description: Usuario o cuenta no encontrados
+  ## --- Fin Rutas del Microservicio de Users ---
+
+  ## --- Rutas del Microservicio de Accounts ---
+  /accounts:
+    get:
+      tags:
+        - Accounts
+      summary: Listar todas las cuentas
+      description: Retorna la lista de todas las cuentas registradas.
+      responses:
+        '200':
+          description: Lista de cuentas obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountDTO'
+
+    post:
+      tags:
+        - Accounts
+      summary: Crear nueva cuenta
+      description: Registra una nueva cuenta bancaria en el sistema.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountDTO'
+            example:
+              tipo: "Caja de Ahorro"
+              fecha_alta: "2023-05-01T00:00:00Z"
+              saldo: 15000.50
+      responses:
+        '201':
+          description: Cuenta creada exitosamente
+        '400':
+          description: Datos inválidos
+
+  /accounts/debug:
+    get:
+      tags:
+        - Accounts
+      summary: Obtener todas las cuentas (Debug)
+      description: Retorna la lista completa de cuentas con ID y lista de usuarios asociados.
+      responses:
+        '200':
+          description: Lista obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+
+  /accounts/{id}:
+    get:
+      tags:
+        - Accounts
+      summary: Obtener cuenta por ID
+      description: Retorna la información de una cuenta específica.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la cuenta
+          schema:
+            type: integer
+            format: int64
+            example: 10
+      responses:
+        '200':
+          description: Cuenta encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDTO'
+        '404':
+          description: Cuenta no encontrada
+
+    put:
+      tags:
+        - Accounts
+      summary: Actualizar cuenta
+      description: Actualiza la información completa de una cuenta por su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la cuenta
+          schema:
+            type: integer
+            format: int64
+            example: 10
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountDTO'
+      responses:
+        '200':
+          description: Cuenta actualizada exitosamente
+        '404':
+          description: Cuenta no encontrada
+        '400':
+          description: Datos de actualización inválidos
+
+    delete:
+      tags:
+        - Accounts
+      summary: Eliminar cuenta
+      description: Elimina una cuenta del sistema por su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la cuenta a eliminar
+          schema:
+            type: integer
+            format: int64
+            example: 10
+      responses:
+        '204':
+          description: Cuenta eliminada exitosamente (No Content)
+        '404':
+          description: Cuenta no encontrada
+  ## --- Fin Rutas del Microservicio de Accounts ---
+
 components:
   schemas:
     Monopatin:
@@ -616,3 +1470,387 @@ components:
           format: double
           description: Longitud de la ubicación de la parada
           example: -58.3816
+
+    Ride:
+      type: object
+      description: Entidad completa del viaje almacenada en la base de datos (incluye ID).
+      properties:
+        id:
+          type: string
+          description: ID único del viaje (MongoDB ObjectId)
+          example: "60c72b2f9c18c454226f9a76"
+        startDate:
+          type: string
+          format: date-time
+          description: Fecha y hora de inicio del viaje.
+          example: "2025-11-21T10:00:00Z"
+        endDate:
+          type: string
+          format: date-time
+          description: Fecha y hora de fin del viaje.
+          example: "2025-11-21T10:45:00Z"
+          nullable: true
+        breakTime:
+          type: string
+          format: time
+          description: Tiempo total de pausa durante el viaje (formato HH:mm:ss).
+          example: "00:05:00"
+        kilometers:
+          type: number
+          format: double
+          description: Kilómetros recorridos.
+          example: 5.2
+        idUser:
+          type: integer
+          format: int64
+          description: ID del usuario que realizó el viaje.
+          example: 101
+        idScooter:
+          type: integer
+          format: int64
+          description: ID del monopatín utilizado.
+          example: 1
+
+    RideDTO:
+      type: object
+      description: Data Transfer Object para la creación y lectura de viajes (sin ID de MongoDB).
+      required:
+        - startDate
+        - kilometers
+        - idUser
+        - idScooter
+      properties:
+        startDate:
+          type: string
+          format: date-time
+          description: Fecha y hora de inicio del viaje.
+          example: "2025-11-21T10:00:00Z"
+        endDate:
+          type: string
+          format: date-time
+          description: Fecha y hora de fin del viaje.
+          example: "2025-11-21T10:45:00Z"
+          nullable: true
+        breakTime:
+          type: string
+          format: time
+          description: Tiempo total de pausa durante el viaje (formato HH:mm:ss).
+          example: "00:05:00"
+        kilometers:
+          type: number
+          format: double
+          description: Kilómetros recorridos.
+          example: 5.2
+        idUser:
+          type: integer
+          format: int64
+          description: ID del usuario que realizó el viaje.
+          example: 101
+        idScooter:
+          type: integer
+          format: int64
+          description: ID del monopatín utilizado.
+          example: 1
+
+    ReporteDTO:
+      type: object
+      description: Objeto de reporte utilizado en el endpoint /rides/reporte.
+      properties:
+        idScooter:
+          type: integer
+          format: int64
+          description: ID del monopatín.
+          example: 1
+        kilometers:
+          type: number
+          format: double
+          description: Kilómetros totales recorridos en el período.
+          example: 150.7
+        totalTrips:
+          type: integer
+          description: Cantidad total de viajes en el período.
+          example: 15
+        totalBreakTimeMinutes:
+          type: integer
+          description: Tiempo total de pausa en minutos (incluido si se solicita).
+          example: 60
+          nullable: true
+
+    RideCountResult:
+      type: object
+      description: Resultado del conteo de viajes por monopatín.
+      properties:
+        idScooter:
+          type: integer
+          format: int64
+          description: ID del monopatín.
+          example: 3
+        count:
+          type: integer
+          description: Cantidad de viajes realizados.
+          example: 8
+
+    UsuarioViajeCountDTO:
+      type: object
+      description: Resultado del conteo de viajes por usuario para el ranking.
+      properties:
+        idUser:
+          type: integer
+          format: int64
+          description: ID del usuario.
+          example: 105
+        count:
+          type: integer
+          description: Cantidad de viajes realizados.
+          example: 12
+
+    ScootersUseDTO:
+      type: object
+      description: Resumen de uso de monopatines por usuario.
+      properties:
+        userId:
+          type: integer
+          format: int64
+          description: ID del usuario.
+          example: 101
+        totalKilometers:
+          type: number
+          format: double
+          description: Kilómetros totales recorridos por el usuario en el período.
+          example: 45.3
+        totalTrips:
+          type: integer
+          description: Cantidad total de viajes realizados.
+          example: 9
+        totalBreakTimeMinutes:
+          type: integer
+          description: Tiempo total de pausa en minutos.
+          example: 30
+
+    Fee:
+      type: object
+      description: Entidad completa de la tarifa almacenada en la base de datos (MongoDB).
+      required:
+        - price
+        - startDate
+      properties:
+        id:
+          type: string
+          description: ID único de la tarifa (MongoDB ObjectId).
+          example: "60c72b2f9c18c454226f9a77"
+        price:
+          type: number
+          format: double
+          description: Precio o monto de la tarifa.
+          example: 50.5
+        startDate:
+          type: string
+          format: date-time
+          description: Fecha y hora de inicio de vigencia de la tarifa.
+          example: "2025-01-01T00:00:00Z"
+        endDate:
+          type: string
+          format: date-time
+          description: Fecha y hora de fin de vigencia de la tarifa (nulo si está vigente).
+          example: "2025-12-31T23:59:59Z"
+          nullable: true
+
+    FeeDTO:
+      type: object
+      description: Data Transfer Object para la creación y actualización de tarifas.
+      required:
+        - price
+        - startDate
+      properties:
+        price:
+          type: number
+          format: double
+          description: Precio o monto de la tarifa.
+          example: 50.5
+        startDate:
+          type: string
+          format: date-time
+          description: Fecha y hora de inicio de vigencia de la tarifa.
+          example: "2025-01-01T00:00:00Z"
+        endDate:
+          type: string
+          format: date-time
+          description: Fecha y hora de fin de vigencia de la tarifa (nulo si está vigente).
+          example: null
+          nullable: true
+
+    Roles:
+      type: string
+      description: Rol de acceso del usuario.
+      enum:
+        - CLIENTE
+        - ADMINISTRADOR
+        - MANTENIMIENTO
+      example: CLIENTE
+
+    TiposUsuario:
+      type: string
+      description: Clasificación del usuario (determina la tarifa).
+      enum:
+        - NORMAL
+        - PLATINUM
+      example: NORMAL
+
+    User:
+      type: object
+      description: Entidad completa del usuario almacenada en la base de datos (JPA).
+      required:
+        - username
+        - password
+        - rol
+        - tipo
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: ID único del usuario.
+          example: 1
+        username:
+          type: string
+          description: Nombre de usuario.
+          example: "juanperez"
+        password:
+          type: string
+          description: Contraseña (generalmente hasheada en DB).
+          writeOnly: true
+        surname:
+          type: string
+          description: Apellido del usuario.
+          example: "Perez"
+        mobile:
+          type: integer
+          format: int64
+          description: Número de teléfono móvil.
+          example: 1155554444
+        rol:
+          $ref: '#/components/schemas/Roles'
+        tipo:
+          $ref: '#/components/schemas/TiposUsuario'
+        isDisabled:
+          type: boolean
+          description: Indica si el usuario ha sido deshabilitado.
+          example: false
+        accounts:
+          type: array
+          description: Lista de cuentas asociadas (solo visible en debug).
+          items:
+            $ref: '#/components/schemas/Account'
+
+    UserDTO:
+      type: object
+      description: Data Transfer Object para la creación, lectura y actualización de usuarios (sin campos sensibles de relación).
+      required:
+        - username
+        - password
+        - rol
+        - tipo
+      properties:
+        username:
+          type: string
+          description: Nombre de usuario.
+          example: "juanperez"
+        password:
+          type: string
+          description: Contraseña (requerida para POST/PUT).
+          writeOnly: true
+        surname:
+          type: string
+          description: Apellido del usuario.
+          example: "Perez"
+          nullable: true
+        mobile:
+          type: integer
+          format: int64
+          description: Número de teléfono móvil.
+          example: 1155554444
+          nullable: true
+        rol:
+          $ref: '#/components/schemas/Roles'
+        tipo:
+          $ref: '#/components/schemas/TiposUsuario'
+
+    ReporteTarifaDTO:
+      type: object
+      description: Reporte de facturación de tarifas por período y mes.
+      properties:
+        totalFacturado:
+          type: number
+          format: double
+          description: Monto total facturado en todo el período.
+          example: 55000.75
+        facturacionMensual:
+          type: object
+          description: Facturación agrupada por mes (clave= año-mes, valor= monto).
+          additionalProperties:
+            type: number
+            format: double
+          example:
+            "2024-01": 12000.50
+            "2024-02": 15000.25
+            "2024-03": 28000.00
+
+    ## --- Schemas del Microservicio de Accounts ---
+    Account:
+      type: object
+      description: Entidad de Cuenta Bancaria asociada a usuarios (JPA).
+      required:
+        - tipo
+        - fecha_alta
+        - saldo
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: ID único de la cuenta.
+          example: 10
+        tipo:
+          type: string
+          description: Tipo de cuenta bancaria (ej. Caja de Ahorro, Cuenta Corriente).
+          example: "Caja de Ahorro"
+        fecha_alta:
+          type: string
+          format: date-time
+          description: Fecha de alta de la cuenta.
+          example: "2023-05-01T00:00:00Z"
+        saldo:
+          type: number
+          format: float
+          description: Saldo actual de la cuenta.
+          example: 15000.50
+        usuarios:
+          type: array
+          description: Lista de IDs de usuarios asociados (solo en modo Debug).
+          items:
+            type: integer
+            format: int64
+            example: 1
+          readOnly: true
+          nullable: true
+
+    AccountDTO:
+      type: object
+      description: Data Transfer Object para la creación y actualización de Cuentas.
+      required:
+        - tipo
+        - fecha_alta
+        - saldo
+      properties:
+        tipo:
+          type: string
+          description: Tipo de cuenta bancaria.
+          example: "Caja de Ahorro"
+        fecha_alta:
+          type: string
+          format: date-time
+          description: Fecha de alta de la cuenta.
+          example: "2023-05-01T00:00:00Z"
+        saldo:
+          type: number
+          format: float
+          description: Saldo actual de la cuenta.
+          example: 15000.50
