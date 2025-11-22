@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "9a659b60-de32-4a9c-86a2-54ccb24a2e99",
+		"_postman_id": "7adc5cfe-247e-49b7-9ec8-8e314d7480b7",
 		"name": "TPE arquitecturas-2025",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "49272331"
+		"_exporter_id": "39970310"
 	},
 	"item": [
 		{
@@ -13,10 +13,16 @@
 					"name": "1",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJzb2Z0dGVrSldUIiwic3ViIjoiYWRtaW4iLCJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOSVNUUkFET1IiXSwiaWF0IjoxNzYzNzY2MjIxLCJleHAiOjE3NjM3NjY4MjF9.CVzq6MVqt8vqHF5mmZbZsJvTFm0cg1cf8b6FDhndBmPChaagdbVERLIao9iV0VzPi-pMglXKo5KRki9A42UDeQ",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Carlos\",\r\n  \"surname\": \"Ramírez\",\r\n  \"mobile\": 549113334445,\r\n  \"rol\": \"ADMINISTRADOR\",\r\n  \"tipo\": \"PREMIUM\"\r\n}",
+							"raw": "{\r\n  \"username\": \"Carlos\",\r\n  \"surname\": \"Ramírez\",\r\n  \"password\": 32131231,\r\n  \"mobile\": 549113334445,\r\n  \"rol\": \"ADMINISTRADOR\",\r\n  \"tipo\": \"PREMIUM\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -43,7 +49,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"María\",\r\n  \"surname\": \"Fernández\",\r\n  \"mobile\": 549114567890,\r\n  \"rol\": \"USUARIO\",\r\n  \"tipo\": \"ESTANDAR\"\r\n}",
+							"raw": "{\r\n  \"username\": \"María\",\r\n  \"surname\": \"Fernández\",\r\n  \"password\":3213213213,\r\n  \"mobile\": 549114567890,\r\n  \"rol\": \"USUARIO\",\r\n  \"tipo\": \"ESTANDAR\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -70,7 +76,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Jorge\",\r\n  \"surname\": \"López\",\r\n  \"mobile\": 549115678901,\r\n  \"rol\": \"MANTENIMIENTO\",\r\n  \"tipo\": \"PREMIUM\"\r\n}",
+							"raw": "{\r\n  \"username\": \"Jorge\",\r\n  \"surname\": \"López\",\r\n  \"password\":3213213213,\r\n  \"mobile\": 549115678901,\r\n  \"rol\": \"MANTENIMIENTO\",\r\n  \"tipo\": \"PREMIUM\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -488,7 +494,13 @@
 							"name": "getAll",
 							"request": {
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJzb2Z0dGVrSldUIiwic3ViIjoiYWRtaW4iLCJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOSVNUUkFET1IiXSwiaWF0IjoxNzYzODIxNjI5LCJleHAiOjE3NjM4MjIyMjl9.ED9x7ZVgx6URm3ZZqMnV4zGhz7h74aX1t0euCAs6JmiUnBIDBntvADebaQiz2OJ-gPI_9-Z2xNm4X4zdpWKRqQ",
+										"type": "text"
+									}
+								],
 								"url": {
 									"raw": "http://localhost:8080/users",
 									"protocol": "http",
@@ -507,7 +519,13 @@
 							"name": "getById",
 							"request": {
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJzb2Z0dGVrSldUIiwic3ViIjoiYWRtaW4iLCJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOSVNUUkFET1IiXSwiaWF0IjoxNzYzNzY2MjIxLCJleHAiOjE3NjM3NjY4MjF9.CVzq6MVqt8vqHF5mmZbZsJvTFm0cg1cf8b6FDhndBmPChaagdbVERLIao9iV0VzPi-pMglXKo5KRki9A42UDeQ",
+										"type": "text"
+									}
+								],
 								"url": {
 									"raw": "http://localhost:8080/users/1",
 									"protocol": "http",
@@ -530,7 +548,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"name\": \"Carlos\",\r\n  \"surname\": \"Ramírez\",\r\n  \"mobile\": 549113334445,\r\n  \"rol\": \"ADMINISTRADOR\",\r\n  \"tipo\": \"PREMIUM\"\r\n}",
+									"raw": "{\r\n  \"username\": \"Carlos\",\r\n  \"surname\": \"Ramírez\",\r\n  \"password\":3213213213,\r\n  \"mobile\": 549113334445,\r\n  \"rol\": \"ADMINISTRADOR\",\r\n  \"tipo\": \"PREMIUM\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -635,13 +653,19 @@
 							},
 							"request": {
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJzb2Z0dGVrSldUIiwic3ViIjoiYWRtaW4iLCJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOSVNUUkFET1IiXSwiaWF0IjoxNzYzODIyNTEwLCJleHAiOjE3NjM4MjMxMTB9.Bcea7ofZNXGOTaHnJd7NOBav9JgpG_trpSwGvdChJYXdlzcTsiGAbD-kqmEJqQ5WWeBWvw_S7Fof5ENZOxtF8g",
+										"type": "text"
+									}
+								],
 								"body": {
 									"mode": "raw",
 									"raw": "{\r\n  \"name\": \"Jose\"\r\n}"
 								},
 								"url": {
-									"raw": "http://localhost:8080/accounts",
+									"raw": "http://localhost:8080/accounts?",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -649,6 +673,12 @@
 									"port": "8080",
 									"path": [
 										"accounts"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": null
+										}
 									]
 								}
 							},
@@ -658,7 +688,13 @@
 							"name": "getById",
 							"request": {
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJzb2Z0dGVrSldUIiwic3ViIjoiYWRtaW4iLCJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOSVNUUkFET1IiXSwiaWF0IjoxNzYzODIyNTEwLCJleHAiOjE3NjM4MjMxMTB9.Bcea7ofZNXGOTaHnJd7NOBav9JgpG_trpSwGvdChJYXdlzcTsiGAbD-kqmEJqQ5WWeBWvw_S7Fof5ENZOxtF8g",
+										"type": "text"
+									}
+								],
 								"url": {
 									"raw": "http://localhost:8080/accounts/1",
 									"protocol": "http",
@@ -746,6 +782,40 @@
 									"path": [
 										"accounts",
 										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Login",
+					"item": [
+						{
+							"name": "Logear user",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"1234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/users/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users",
+										"login"
 									]
 								}
 							},
