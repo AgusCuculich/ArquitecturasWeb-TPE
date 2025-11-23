@@ -2,19 +2,18 @@ package com.service;
 
 import com.client.GroqClient;
 import com.dto.RespuestaApi;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,20 +23,21 @@ import org.slf4j.LoggerFactory;
 @Service
 public class IaService {
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
     @Autowired
     private GroqClient groqChatClient;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     private final String CONTEXTO_SQL;
     private static final Logger log = LoggerFactory.getLogger(IaService.class);
 
+    // Solo permitir SELECT para lectura
     private static final Pattern SQL_ALLOWED =
-            Pattern.compile("(?is)\\b(SELECT|INSERT|UPDATE|DELETE)\\b[\\s\\S]*?;");
+            Pattern.compile("(?is)\\b(SELECT)\\b[\\s\\S]*?;");
 
     private static final Pattern SQL_FORBIDDEN =
-            Pattern.compile("(?i)\\b(DROP|TRUNCATE|ALTER|CREATE|GRANT|REVOKE)\\b");
+            Pattern.compile("(?i)\\b(DROP|TRUNCATE|ALTER|CREATE|GRANT|REVOKE|INSERT|UPDATE|DELETE)\\b");
 
     public IaService() {
         this.CONTEXTO_SQL = cargarEsquemaSQL("esquema_completo.sql");
@@ -54,14 +54,14 @@ public class IaService {
     @Transactional
     public ResponseEntity<?> procesarPrompt(String promptUsuario) {
         try {
-
+            // Generar SQL con la IA
             String promptFinal = """
                     Este es el esquema de mi base de datos MySQL:
                     %s
                     
                     Basándote exclusivamente en este esquema, devolveme ÚNICAMENTE una sentencia SQL
                     MySQL completa y VÁLIDA (sin texto adicional, sin markdown, sin comentarios) que
-                    termine con punto y coma. La sentencia puede ser SELECT/INSERT/UPDATE/DELETE.
+                    termine con punto y coma. La sentencia DEBE ser SOLO de tipo SELECT (consulta de lectura).
                     
                     %s
                     """.formatted(CONTEXTO_SQL, promptUsuario);
@@ -71,6 +71,7 @@ public class IaService {
             String respuestaIa = groqChatClient.preguntar(promptFinal);
             log.info("==== RESPUESTA IA ====\n{}", respuestaIa);
 
+            // Extraer y validar SQL
             String sql = extraerConsultaSQL(respuestaIa);
             if (sql == null || sql.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -81,44 +82,55 @@ public class IaService {
 
             log.info("==== SQL EXTRAÍDA ====\n{}", sql);
 
-            String sqlToExecute = sql.endsWith(";") ? sql.substring(0, sql.length() - 1) : sql;
+            // Detectar microservicio destino
+            String microservicio;
+            try {
+                microservicio = detectarMicroservicio(sql);
+                log.info("==== MICROSERVICIO DETECTADO ====\n{}", microservicio);
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(new RespuestaApi<>(false, e.getMessage(), null));
+            }
+
+            // Obtener URL del microservicio (localhost)
+            String url = detectarUrl(microservicio);
+            log.info("==== ENVIANDO REQUEST A ====\n{}", url);
+
+            // Preparar request body
+            Map<String, String> requestBody = new HashMap<>();
+            requestBody.put("sql", sql);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<Map<String, String>> request = new HttpEntity<>(requestBody, headers);
 
             try {
-                Object data;
+                ResponseEntity<RespuestaApi> response = restTemplate.exchange(
+                        url,
+                        HttpMethod.POST,
+                        request,
+                        RespuestaApi.class
+                );
 
-                if (sql.trim().toUpperCase().startsWith("SELECT")) {
-                    @SuppressWarnings("unchecked")
-                    List<Object[]> resultados =
-                            entityManager.createNativeQuery(sqlToExecute).getResultList();
+                log.info("==== RESPUESTA DEL MICROSERVICIO ====\nStatus: {}\nBody: {}",
+                        response.getStatusCode(), response.getBody());
 
-                    data = resultados;
-
-                    return ResponseEntity.ok(
-                            new RespuestaApi<>(true, "Consulta SELECT ejecutada con éxito", data)
-                    );
-
-                } else {
-                    int rows = entityManager.createNativeQuery(sqlToExecute).executeUpdate();
-                    data = rows;
-
-                    return ResponseEntity.ok(
-                            new RespuestaApi<>(true, "Sentencia DML ejecutada con éxito", data)
-                    );
-                }
+                return response;
 
             } catch (Exception e) {
-                log.warn("Error al ejecutar SQL: {}", e.getMessage(), e);
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                log.error("Error al comunicarse con el microservicio {}: {}", microservicio, e.getMessage(), e);
+                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
                         .body(new RespuestaApi<>(false,
-                                "Error al ejecutar la sentencia: " + e.getMessage(), null));
+                                "Error al comunicarse con el microservicio: " + e.getMessage(),
+                                null));
             }
 
         } catch (Exception e) {
             log.error("Fallo al procesar prompt", e);
-            return new ResponseEntity<>(
-                    new RespuestaApi<>(false, "Error al procesar el prompt: " + e.getMessage(), null),
-                    HttpStatus.INTERNAL_SERVER_ERROR
-            );
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new RespuestaApi<>(false,
+                            "Error al procesar el prompt: " + e.getMessage(),
+                            null));
         }
     }
 
@@ -136,10 +148,42 @@ public class IaService {
         }
 
         if (SQL_FORBIDDEN.matcher(sql).find()) {
-            log.warn("Sentencia bloqueada por contener DDL prohibido: {}", sql);
+            log.warn("Sentencia bloqueada por contener operación no permitida: {}", sql);
             return null;
         }
 
         return sql;
+    }
+
+    private String detectarMicroservicio(String sql) {
+        String sqlUpper = sql.toUpperCase();
+
+        // Detectar por tablas del esquema de monopatín
+        if (sqlUpper.contains("MONOPATIN") ||
+                sqlUpper.contains("PARADA") ||
+                sqlUpper.contains("MANTENIMIENTO")) {
+            return "monopatin";
+        }
+
+        // Detectar por tablas del esquema de usuarios
+        if (sqlUpper.contains("USERS") ||
+                sqlUpper.contains("ACCOUNT") ||
+                sqlUpper.contains("USUARIO_ACCOUNT")) {
+            return "user";
+        }
+
+        // Si no se detecta ninguna tabla conocida
+        throw new IllegalArgumentException(
+                "No se pudo identificar el microservicio destino. " +
+                        "La consulta no contiene tablas conocidas (monopatin, parada, mantenimiento, users, account)."
+        );
+    }
+
+    private String detectarUrl(String microservicio) {
+        return switch(microservicio) {
+            case "monopatin" -> "http://localhost:8082/execute-sql"; // Puerto del microservicio monopatin
+            case "user" -> "http://localhost:8088/users/execute-sql";      // Puerto del microservicio user
+            default -> throw new IllegalArgumentException("Microservicio desconocido: " + microservicio);
+        };
     }
 }
