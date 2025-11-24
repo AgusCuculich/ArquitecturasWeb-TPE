@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "7adc5cfe-247e-49b7-9ec8-8e314d7480b7",
+		"_postman_id": "c6535c45-2365-458a-b5b8-632a93343b14",
 		"name": "TPE arquitecturas-2025",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "39970310"
+		"_exporter_id": "49272331"
 	},
 	"item": [
 		{
@@ -675,7 +675,10 @@
 							"name": "getOthersUsuers",
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": {
+									"raw": ""
+								}
 							},
 							"response": []
 						}
@@ -867,7 +870,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"1234\"\r\n}",
+									"raw": "{\r\n    \"username\": \"Carlos\",\r\n    \"password\": \"32131231\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1573,11 +1576,21 @@
 						{
 							"name": "saveParada",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJzb2Z0dGVrSldUIiwic3ViIjoiQ2FybG9zIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTklTVFJBRE9SIl0sImlhdCI6MTc2NDAyMTc3NywiZXhwIjoxNzY0MDIzNTc3fQ.521nXmmp9PXKTXjNL0q5AtUsT4elooe5cnR8ct45-AvpuJSAulGcDLfPhEGqwN4olFmbFMnVupWGh2kY28Hp4w",
+											"type": "string"
+										}
+									]
+								},
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"gps\": 123456789\r\n}\r\n\r\n",
+									"raw": "{\r\n  \"latitud\": -36.603500,\r\n  \"longitud\": -56.381700\r\n}\r\n\r\n",
 									"options": {
 										"raw": {
 											"language": "json"
