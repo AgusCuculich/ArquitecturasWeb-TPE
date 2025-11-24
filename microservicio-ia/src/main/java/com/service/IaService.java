@@ -101,26 +101,33 @@ public class IaService {
     // ------------------------------------------------------------
     private String promptSQL(String userPrompt) {
         return """
-                Este es el esquema de mi base de datos MySQL:
-                %s
-                
-                VALORES VÁLIDOS PARA ENUMS DE USER:
-                
-                Campo "tipo" (almacenado como TINYINT):
-                - 0 = PREMIUM
-                - 1 = ESTANDAR
-                
-                Campo "rol" (almacenado como TINYINT):
-                - 0 = ADMINISTRADOR
-                - 1 = USUARIO
-                - 2 = MANTENIMIENTO
+            Este es el esquema de mi base de datos MySQL:
+            %s
+            
+            VALORES VÁLIDOS PARA ENUMS DE USER:
+            
+            Campo "tipo" (almacenado como TINYINT):
+            - 0 = PREMIUM
+            - 1 = ESTANDAR
+            
+            Campo "rol" (almacenado como TINYINT):
+            - 0 = ADMINISTRADOR
+            - 1 = USUARIO
+            - 2 = MANTENIMIENTO
+            
+            VALORES VÁLIDOS PARA ENUMS DE MONOPATIN:
+            
+            Campo "estado" (almacenado como TINYINT):
+            - 0 = DISPONIBLE
+            - 1 = OCUPADO
+            - 2 = MANTENIMIENTO
 
-                Generá SOLO una sentencia SQL tipo SELECT,
-                válida para MySQL, sin texto adicional, sin markdown
-                y terminada en punto y coma.
+            Generá SOLO una sentencia SQL tipo SELECT,
+            válida para MySQL, sin texto adicional, sin markdown
+            y terminada en punto y coma.
 
-                %s
-                """.formatted(CONTEXTO_SQL, userPrompt);
+            %s
+            """.formatted(CONTEXTO_SQL, userPrompt);
     }
 
     private String promptMongo(String userPrompt) {
