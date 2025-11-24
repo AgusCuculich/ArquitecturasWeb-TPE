@@ -40,6 +40,6 @@ spring:
         - id: mantenimiento
           uri: http://localhost:8082
           predicates:
-            - Path=/mantenimiento/**
+            - Path=/mantenimientos/**
           filters:
             - JwtAuthentication
