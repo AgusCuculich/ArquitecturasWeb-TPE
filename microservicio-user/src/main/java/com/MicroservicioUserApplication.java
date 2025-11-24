@@ -20,20 +20,6 @@ public class MicroservicioUserApplication {
         return new RestTemplate();
     }
 
-    @Bean
-    CommandLineRunner initData(UserRepository repo) {
-        return args -> {
-            if (repo.findByUsername("admin") == null) {
-                User admin = new User();
-                admin.setName("admin");
-                admin.setSurname("Admin");
-                admin.setRol(Roles.ADMINISTRADOR); // O el rol que tengas en tu Enum
-                // ¡Aquí está la magia! Encriptamos antes de guardar
-                admin.setPassword(PasswordUtils.hashPassword("1234"));
-                repo.save(admin);
-                System.out.println("Usuario 'admin' creado con pass '1234'");
-            }
-        };
-    }
+
 
 }

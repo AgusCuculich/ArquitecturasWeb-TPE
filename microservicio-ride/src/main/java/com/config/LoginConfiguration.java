@@ -2,6 +2,7 @@ package com.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,6 +29,8 @@ public class LoginConfiguration {
                         // No necesitamos permitir /login aquí porque este microservicio no loguea.
                         // Solo permitimos /error por si Spring necesita reportar fallos.
                         .requestMatchers("/error").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/rides/execute-mongo").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/fees/execute-mongo").permitAll()
 
                         // TODO LO DEMÁS requiere token:
                         .anyRequest().authenticated()

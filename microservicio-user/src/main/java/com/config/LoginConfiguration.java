@@ -27,23 +27,22 @@ public class LoginConfiguration {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        // 1. PERMITIR POST para /users (CREACIÓN DE USUARIO) <--- LÍNEA AÑADIDA
+                        // Endpoints públicos
                         .requestMatchers(HttpMethod.POST, "/users").permitAll()
-
-                        // 2. PERMITIR POST para /users/login (INICIO DE SESIÓN)
+                        .requestMatchers(HttpMethod.POST, "/accounts/execute-sql").permitAll()
                         .requestMatchers(HttpMethod.POST, "/users/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/users/execute-sql").permitAll() //
 
                         .requestMatchers("/error").permitAll()
 
-                        // Cualquier otra petición debe estar autenticada
+                        // Todo lo demás requiere JWT
                         .anyRequest().authenticated()
                 )
-                // Asegúrate de que este filtro solo se añada si es un endpoint que requiere autenticación,
-                // pero si lo dejas aquí, está bien ya que el filtro puede ignorar rutas permitidas.
                 .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
