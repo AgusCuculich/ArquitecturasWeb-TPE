@@ -4,6 +4,7 @@ import com.config.JWTAuthorizationFilter; // Asegúrate de tener este filtro (el
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,6 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@EnableMethodSecurity(securedEnabled = true)
 public class LoginConfiguration {
 
     private final JWTAuthorizationFilter jwtAuthorizationFilter;
@@ -31,8 +33,7 @@ public class LoginConfiguration {
                         // 2. PERMITIR POST para /users/login (INICIO DE SESIÓN)
                         .requestMatchers(HttpMethod.POST, "/users/login").permitAll()
 
-                        // Por si acaso, permitimos el /login sin /users (solo si existe esa ruta)
-                        // .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                        .requestMatchers("/error").permitAll()
 
                         // Cualquier otra petición debe estar autenticada
                         .anyRequest().authenticated()

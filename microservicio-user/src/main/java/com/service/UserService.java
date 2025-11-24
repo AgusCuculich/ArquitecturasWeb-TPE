@@ -5,12 +5,15 @@ import com.dto.ReporteTarifaDTO;
 import com.dto.UserDTO;
 import com.dto.UsuarioViajeCountDTO;
 import com.entity.User;
+import com.utils.PasswordUtils;
 import com.utils.Roles;
 import com.utils.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.repository.UserRepository;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -21,9 +24,41 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository repo;
-
     private final RideClient rideClient;
-    private final PasswordEncoder passwordEncoder;
+
+    public void save(UserDTO dto) {
+
+        // 1. VALIDACIÓN PREVENTIVA: ¿Ya existe el usuario?
+        // Buscamos si hay alguien con ese nombre. Si devuelve algo distinto de null, es que ya existe.
+        if (repo.findByUsername(dto.getUsername()) != null) {
+            // Lanzamos un error 409 CONFLICT con el mensaje personalizado
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "El nombre de usuario '" + dto.getUsername() + "' ya existe. Por favor elija otro.");
+        }
+
+        // 2. Si no existe, procedemos con la creación normal
+        User user = new User();
+        user.setUsername(dto.getUsername());
+        user.setSurname(dto.getSurname());
+        user.setMobile(dto.getMobile());
+        user.setRol(dto.getRol());
+        user.setTipo(dto.getTipo());
+
+        // 3. Encriptación (Como ya lo tenías)
+        if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
+            String passHasheada = PasswordUtils.hashPassword(dto.getPassword());
+            user.setPassword(passHasheada);
+        } else {
+            // 400 BAD REQUEST si falta la contraseña
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La contraseña es obligatoria");
+        }
+
+        repo.save(user);
+    }
+
+    // ... el resto de tus métodos ...
+
+
 
     public List<UsuarioViajeCountDTO> rankingPorPeriodoYRol(Date desde, Date hasta, String rol) {
 
@@ -65,43 +100,10 @@ public class UserService {
     }
 
 
-
-
-
     public void saveDebug(User user) {
         repo.save(user);
     }
 
-    public void save(UserDTO dto){
-        User user = new User();
-
-        // 1. ASIGNAR EL NOMBRE DE USUARIO (username) Y LA CONTRASEÑA
-        // Nota: Asumimos que el DTO tiene un método getUsername() y getPassword().
-
-        String rawPassword = dto.getPassword();
-
-        if (rawPassword == null || rawPassword.isEmpty()) {
-            // Previene crear un usuario sin contraseña, crucial para la seguridad.
-            throw new IllegalArgumentException("La contraseña es obligatoria para crear un usuario.");
-        }
-
-        // Asignación del nombre de usuario (el campo correcto en la entidad es username, no name)
-        // Recordatorio: El setter setName(String name) en tu entidad realmente asigna al campo username.
-        // Si tienes setUsername() en tu entidad, úsalo directamente para mayor claridad.
-        user.setName(dto.getUsername()); // Esto mapea el "name" del DTO al campo 'username' de la Entidad
-
-        // CODIFICACIÓN (HASHING)
-        String encodedPassword = passwordEncoder.encode(rawPassword);
-        user.setPassword(encodedPassword); // Establece el hash codificado
-
-        // 2. ASIGNAR EL RESTO DE CAMPOS
-        user.setSurname(dto.getSurname());
-        user.setMobile(dto.getMobile());
-        user.setRol(dto.getRol());
-        user.setTipo(dto.getTipo());
-
-        repo.save(user);
-    }
 
     public void delete(Long id) {
         User user = repo.findById(id).orElseThrow(() -> new UserNotFoundException(id));
