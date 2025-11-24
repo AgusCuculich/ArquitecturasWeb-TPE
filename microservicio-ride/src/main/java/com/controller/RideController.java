@@ -1,22 +1,22 @@
 package com.controller;
 
-import com.dto.RideCountResult;
-import com.dto.ReporteDTO;
-import com.dto.RideDTO;
-import com.dto.ScootersUseDTO;
+import com.dto.*;
 import com.entity.Ride;
 import com.dto.ScootersUseDTO;
-import com.dto.UsuarioViajeCountDTO;
 
+import com.service.MongoExecutorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.service.RideService;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -24,6 +24,14 @@ import java.util.Optional;
 @RequestMapping("/rides")
 public class RideController {
     private final RideService service;
+    @Autowired
+    private MongoExecutorService mongoExecutorService;
+
+    @PostMapping("/execute-mongo")
+    public ResponseEntity<RespuestaApi> executeMongo(@RequestBody Map<String, String> request) {
+        String json = request.get("mongoQuery");
+        return ResponseEntity.ok(mongoExecutorService.executeMongoQuery(json));
+    }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

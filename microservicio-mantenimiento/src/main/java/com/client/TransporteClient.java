@@ -14,8 +14,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 public class TransporteClient {
 
     private final RestTemplate restTemplate;
-
-    public TransporteClient(@Qualifier("restTemplate") RestTemplate restTemplate) {
+    public TransporteClient(@Qualifier("restTemplateMantenimiento") RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 

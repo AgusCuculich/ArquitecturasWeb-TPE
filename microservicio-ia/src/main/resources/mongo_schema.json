@@ -1,0 +1,105 @@
+{
+  "database": "rides_db",
+  "collections": [
+    {
+      "name": "ride",
+      "schema": {
+        "bsonType": "object",
+        "required": ["_class", "end_date", "id_scooter", "id_user", "kilometers", "start_date"],
+        "properties": {
+          "_id": {
+            "bsonType": "objectId",
+            "description": "Identificador único generado por MongoDB"
+          },
+          "_class": {
+            "bsonType": "string",
+            "description": "Nombre completo de la clase Java",
+            "pattern": "^com\\.entity\\.Ride$"
+          },
+          "break_time": {
+            "bsonType": "date",
+            "description": "Fecha y hora de pausa/descanso durante el viaje"
+          },
+          "end_date": {
+            "bsonType": "date",
+            "description": "Fecha y hora de finalización del viaje"
+          },
+          "id_scooter": {
+            "bsonType": "int",
+            "description": "Identificador del scooter utilizado",
+            "minimum": 1
+          },
+          "id_user": {
+            "bsonType": "int",
+            "description": "Identificador del usuario que realizó el viaje",
+            "minimum": 1
+          },
+          "kilometers": {
+            "bsonType": "double",
+            "description": "Kilómetros recorridos durante el viaje",
+            "minimum": 0
+          },
+          "start_date": {
+            "bsonType": "date",
+            "description": "Fecha y hora de inicio del viaje"
+          }
+        }
+      },
+      "indexes": [
+        {
+          "name": "_id_",
+          "keys": { "_id": 1 }
+        },
+        {
+          "name": "id_user_idx",
+          "keys": { "id_user": 1 }
+        },
+        {
+          "name": "id_scooter_idx",
+          "keys": { "id_scooter": 1 }
+        },
+        {
+          "name": "start_date_idx",
+          "keys": { "start_date": -1 }
+        }
+      ]
+    },
+    {
+      "name": "fee",
+      "schema": {
+        "bsonType": "object",
+        "required": ["_class", "price", "start_date"],
+        "properties": {
+          "_id": {
+            "bsonType": "objectId",
+            "description": "Identificador único generado por MongoDB"
+          },
+          "_class": {
+            "bsonType": "string",
+            "description": "Nombre completo de la clase Java",
+            "pattern": "^com\\.entity\\.Fee$"
+          },
+          "price": {
+            "bsonType": "int",
+            "description": "Precio de la tarifa",
+            "minimum": 0
+          },
+          "start_date": {
+            "bsonType": "date",
+            "description": "Fecha de inicio de vigencia de la tarifa"
+          }
+        }
+      },
+      "indexes": [
+        {
+          "name": "_id_",
+          "keys": { "_id": 1 }
+        },
+        {
+          "name": "start_date_idx",
+          "keys": { "start_date": -1 }
+        }
+      ]
+    }
+  ]
+}

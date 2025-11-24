@@ -1,24 +1,39 @@
 package com.controller;
 
 import com.dto.ReporteTarifaDTO;
+import com.dto.RespuestaApi;
 import com.dto.UserDTO;
 import com.dto.UsuarioViajeCountDTO;
 import com.entity.User;
+import com.service.SqlExecutorService;
 import com.utils.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.service.UserService;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService service;
+
+
+    @Autowired
+    private SqlExecutorService sqlExecutorService;
+
+    @PostMapping("/execute-sql")
+    public ResponseEntity<RespuestaApi> executeSql(@RequestBody Map<String, String> request) {
+        String sql = request.get("sql");
+        return sqlExecutorService.executeQuery(sql);
+    }
 
     @GetMapping
     @PreAuthorize("hasRole('ADMINISTRADOR')")
@@ -64,7 +79,6 @@ public class UserController {
     @PostMapping
     public void save(@RequestBody UserDTO user) {
         service.save(user);
-
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)

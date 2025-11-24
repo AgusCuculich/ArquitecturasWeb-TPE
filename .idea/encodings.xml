@@ -3,6 +3,8 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/microservicio-gateway/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/microservicio-gateway/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservicio-ia/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservicio-ia/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/microservicio-mantenimiento/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/microservicio-mantenimiento/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/microservicio-ride/src/main/java" charset="UTF-8" />

@@ -1,14 +1,19 @@
 package com.controller;
 
 import com.dto.AccountDTO;
+import com.dto.RespuestaApi;
 import com.entity.Account;
 import com.service.AccountService;
+import com.service.SqlExecutorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -16,6 +21,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AccountController {
     private final AccountService service;
+    @Autowired
+    private SqlExecutorService sqlExecutorService;
+
+    @PostMapping("/execute-sql")
+    public ResponseEntity<RespuestaApi> executeSql(@RequestBody Map<String, String> request) {
+        String sql = request.get("sql");
+        return sqlExecutorService.executeQuery(sql);
+    }
 
     @GetMapping("/debug")
     @PreAuthorize("hasRole('ADMINISTRADOR')")

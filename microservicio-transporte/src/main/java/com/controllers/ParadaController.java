@@ -1,14 +1,18 @@
 package com.controllers;
 
+import com.dtos.RespuestaApi;
 import com.dtos.ParadaDTO;
 import com.entities.Parada;
+import com.services.SqlExecutorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.services.ParadaService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,6 +20,14 @@ import java.util.List;
 public class ParadaController {
 
     private final ParadaService paradaService;
+    @Autowired
+    private SqlExecutorService sqlExecutorService;
+
+    @PostMapping("/execute-sql")
+    public ResponseEntity<RespuestaApi> executeSql(@RequestBody Map<String, String> request) {
+        String sql = request.get("sql");
+        return sqlExecutorService.executeQuery(sql);
+    }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'MANTENIMIENTO', 'USUARIO')")

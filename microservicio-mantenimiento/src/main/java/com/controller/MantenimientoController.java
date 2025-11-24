@@ -1,13 +1,18 @@
 package com.controller;
 
 import com.dto.MantenimientoDTO;
+import com.dto.RespuestaApi;
 import com.entity.Mantenimiento;
 import com.service.MantenimientoService;
+import com.service.SqlExecutorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -15,6 +20,14 @@ import java.util.List;
 public class MantenimientoController {
 
     private final MantenimientoService  mantenimientoService;
+    @Autowired
+    private SqlExecutorService sqlExecutorService;
+
+    @PostMapping("/execute-sql")
+    public ResponseEntity<RespuestaApi> executeSql(@RequestBody Map<String, String> request) {
+        String sql = request.get("sql");
+        return sqlExecutorService.executeQuery(sql);
+    }
 
     @GetMapping("/")
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'MANTENIMIENTO')")

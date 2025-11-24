@@ -1,18 +1,23 @@
 package com.controller;
 
 import com.dto.FeeDTO;
+import com.dto.RespuestaApi;
 import com.dto.RideDTO;
 import com.entity.Fee;
 import com.entity.Ride;
 import com.service.FeeService;
+import com.service.MongoExecutorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -20,6 +25,14 @@ import java.util.Optional;
 @RequestMapping("/fees")
 public class FeeController {
     private final FeeService service;
+    @Autowired
+    private MongoExecutorService mongoExecutorService;
+
+    @PostMapping("/execute-mongo")
+    public ResponseEntity<RespuestaApi> executeMongo(@RequestBody Map<String, String> request) {
+        String json = request.get("mongoQuery");
+        return ResponseEntity.ok(mongoExecutorService.executeMongoQuery(json));
+    }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

@@ -1,22 +1,26 @@
 package com.controllers;
 
 
+import com.dtos.RespuestaApi;
 import com.dtos.MonopatinDTO;
 import com.dtos.ReporteMonopatinesDTO;
 import com.entities.Monopatin;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.services.SqlExecutorService;
 import com.utils.EstadoMonopatin;
 import jakarta.servlet.http.PushBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.services.MonopatinService;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,6 +28,14 @@ import java.util.List;
 public class MonopatinController {
 
     private final MonopatinService monopatinService;
+    @Autowired
+    private SqlExecutorService sqlExecutorService;
+
+    @PostMapping("/execute-sql")
+    public ResponseEntity<RespuestaApi> executeSql(@RequestBody Map<String, String> request) {
+        String sql = request.get("sql");
+        return sqlExecutorService.executeQuery(sql);
+    }
 
     @GetMapping("/debug")
     @PreAuthorize("hasRole('ADMINISTRADOR')")
