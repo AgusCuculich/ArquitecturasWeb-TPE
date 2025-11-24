@@ -10,13 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/ia")
 public class IaController {
 
-    /**
-     * IaController expone el endpoint REST que recibe prompts y delega:
-     * - IaService recibe el prompt, añade esquema y consulta a la IA
-     * - La IA devuelve la sentencia SQL
-     * - IaService valida y ejecuta la SQL
-     * - El controlador devuelve los resultados al cliente
-     */
+
     @Autowired
     private IaService iaService;
 

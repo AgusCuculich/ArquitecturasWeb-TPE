@@ -32,7 +32,6 @@ public class LoginController {
         User u = userRepository.findByUsername(login.getUsername());
 
         // 2. Verificamos si existe y si la contraseña coincide
-        // Nota: u.getPassword() funcionará una vez agregues el campo a la entidad
         if (u == null || !PasswordUtils.authenticate(login.getPassword(), u.getPassword())) {
             return new Token("", "Usuario o contraseña incorrectos");
         }

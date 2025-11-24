@@ -31,7 +31,7 @@ public class LoginConfiguration {
                         .requestMatchers(HttpMethod.POST, "/users").permitAll()
                         .requestMatchers(HttpMethod.POST, "/accounts/execute-sql").permitAll()
                         .requestMatchers(HttpMethod.POST, "/users/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/users/execute-sql").permitAll() //
+                        .requestMatchers(HttpMethod.POST, "/users/execute-sql").permitAll()
 
                         .requestMatchers("/error").permitAll()
 

@@ -5,7 +5,7 @@ public class LoginInfo {
     private String username;
     private String password;
 
-    // Getters y Setters necesarios para @RequestBody [cite: 177, 178]
+    // Getters y Setters necesarios para @RequestBody
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
     public String getPassword() { return password; }

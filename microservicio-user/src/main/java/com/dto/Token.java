@@ -5,7 +5,6 @@ public class Token {
     private String token;
     private String error;
 
-    // Constructor usado en el ejemplo del PDF [cite: 180, 181]
     public Token(String token, String error) {
         this.token = token;
         this.error = error;

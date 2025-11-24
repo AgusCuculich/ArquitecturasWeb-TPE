@@ -5,8 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor  // ← Constructor vacío
-@AllArgsConstructor // ← Constructor con todos los parámetros
+@NoArgsConstructor
+@AllArgsConstructor
 public class RespuestaApi<T> {
     private boolean success;
     private String message;

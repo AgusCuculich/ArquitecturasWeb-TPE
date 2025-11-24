@@ -30,7 +30,7 @@ public class MonopatinService {
 
         // 1) Llamamos al servicio de rides
         List<ReporteMonopatinesDTO> reporteRides = rideClient.obtenerReporte(
-                // Puedes usar SimpleDateFormat si hace falta
+
                 inicio,
                 fin,
                 incluirPausas

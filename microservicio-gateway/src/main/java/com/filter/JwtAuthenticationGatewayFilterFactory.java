@@ -12,8 +12,7 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 @Component
-// 1. NOMBRE: Debe terminar en "GatewayFilterFactory" para que el YAML lo encuentre.
-// 2. EXTENDS: Debe extender de AbstractGatewayFilterFactory (Reactivo), no de OncePerRequestFilter.
+
 public class JwtAuthenticationGatewayFilterFactory extends AbstractGatewayFilterFactory<JwtAuthenticationGatewayFilterFactory.Config> {
 
     private final String PREFIX = "Bearer ";
@@ -27,11 +26,8 @@ public class JwtAuthenticationGatewayFilterFactory extends AbstractGatewayFilter
     public GatewayFilter apply(Config config) {
             return (exchange, chain) -> {
 
-                // 🛑 LÓGICA DE EXCLUSIÓN AÑADIDA 🛑
                 String path = exchange.getRequest().getURI().getPath();
 
-                // Definir las rutas públicas (deben coincidir con las reglas del SecurityConfig)
-                // Se utiliza startsWith porque la ruta puede ser /users, /users/, /users?param=x
                 boolean isPublicRoute =
                         path.startsWith("/users") && exchange.getRequest().getMethod().matches("POST");
 
@@ -42,24 +38,23 @@ public class JwtAuthenticationGatewayFilterFactory extends AbstractGatewayFilter
                     // Si la ruta es pública, saltamos la verificación del token y dejamos pasar.
                     return chain.filter(exchange);
                 }
-                // 🛑 FIN LÓGICA DE EXCLUSIÓN 🛑
 
-                // 1. Validar que exista el header (Solo si la ruta no es pública)
+
+                // Validar que exista el header (Solo si la ruta no es pública)
                 if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
                     return onError(exchange, HttpStatus.UNAUTHORIZED, "No hay header de autorización");
                 }
-                // ... el resto de la lógica del filtro sigue igual ...
 
                 String authHeader = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 
-                // 2. Validar formato Bearer
+
                 if (authHeader == null || !authHeader.startsWith(PREFIX)) {
                     return onError(exchange, HttpStatus.UNAUTHORIZED, "Formato de token inválido");
                 }
 
-                // 3. Validar Token y Firma
+                // Validar Token y Firma
                 try {
-                    // ... (lógica de verificación del token)
+
                     String token = authHeader.replace(PREFIX, "");
                     Jwts.parser()
                             .setSigningKey(SECRET.getBytes())
@@ -81,6 +76,6 @@ public class JwtAuthenticationGatewayFilterFactory extends AbstractGatewayFilter
     }
 
     public static class Config {
-        // Configuración vacía requerida
+
     }
 }

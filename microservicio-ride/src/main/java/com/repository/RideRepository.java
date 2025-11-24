@@ -46,9 +46,9 @@ public interface RideRepository extends MongoRepository<Ride,String> {
                     "sumaKilometros: { $sum: \"$kilometers\" } " +
                     "} }",
             "{ $project: { " +
-                    "idmonopatin: \"$_id\", " +             // Renombrado de 'idScooter' a 'idmonopatin'
-                    "kilometros: \"$sumaKilometros\", " +   // Renombrado de 'totalKilometros' a 'kilometros'
-                    "pausa: { $literal: null }, " +         // Agregado 'pausa' como null
+                    "idmonopatin: \"$_id\", " +
+                    "kilometros: \"$sumaKilometros\", " +
+                    "pausa: { $literal: null }, " +
                     "_id: 0 " +
                     "} }"
     })
@@ -64,9 +64,9 @@ public interface RideRepository extends MongoRepository<Ride,String> {
                     "tiempoPausa: { $first: \"$break_time\" } " +
                     "} }",
             "{ $project: { " +
-                    "idmonopatin: \"$_id\", " +             // Renombrado
-                    "kilometros: \"$sumaKilometros\", " +   // Renombrado
-                    "pausa: \"$tiempoPausa\", " +           // Renombrado
+                    "idmonopatin: \"$_id\", " +
+                    "kilometros: \"$sumaKilometros\", " +
+                    "pausa: \"$tiempoPausa\", " +
                     "_id: 0 " +
                     "} }"
     })

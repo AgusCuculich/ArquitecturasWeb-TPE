@@ -68,10 +68,9 @@ public class GroqClient {
         ));
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(apiKey); // <-- CLAVE AQUÍ
+        headers.setBearerAuth(apiKey);
         HttpEntity<Map<String, Object>> req = new HttpEntity<>(body, headers);
         var resp = rest.exchange(url, HttpMethod.POST, req, Map.class);
-        // Extrae el texto: choices[0].message.content
         List<?> choices = (List<?>) ((Map<?, ?>) resp.getBody()).get("choices");
         Map<?, ?> choice0 = (Map<?, ?>) choices.get(0);
         Map<?, ?> message = (Map<?, ?>) choice0.get("message");

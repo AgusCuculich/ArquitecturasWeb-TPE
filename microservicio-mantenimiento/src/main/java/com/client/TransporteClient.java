@@ -23,11 +23,10 @@ public class TransporteClient {
         // Usamos placeholders {id} y {estado} para que RestTemplate los sustituya
         String url = "http://localhost:8081/monopatines/{id}/estado?estado={estado}";
 
-        // 1. Preparamos el Header con el Token
+
         HttpEntity<Void> requestEntity = createRequestEntityWithToken();
 
-        // 2. Enviamos la petición autenticada
-        // Fíjate que pasamos 'requestEntity' en lugar de 'null'
+
         restTemplate.exchange(
                 url,
                 HttpMethod.PUT,

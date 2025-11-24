@@ -20,7 +20,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
     private final String HEADER = "Authorization";
     private final String PREFIX = "Bearer ";
-    // ¡IMPORTANTE! Debe ser la misma clave larga que usaste en User y Gateway
     private final String SECRET = "JksNMh7894ISjuh78945kljIOU89543jklfd894532jkld90432jklfds90432jkldsf90432";
 
     @Override

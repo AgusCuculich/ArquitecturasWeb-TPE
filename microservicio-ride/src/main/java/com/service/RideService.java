@@ -98,19 +98,13 @@ public class RideService {
 
     public List<ReporteDTO> generarReporte(Date inicio, Date fin, boolean incluirPausas) {
 
-        // 1. Elige qué método del repositorio llamar
+        // Elige qué método del repositorio llamar
         if (incluirPausas) {
-            // Esta consulta (que ya corregimos) devuelve una
-            // List<ReporteDTO> con los campos 'idmonopatin', 'kilometros' y 'pausa'
             return repo.obtenerReporteConPausa(inicio, fin);
         } else {
-            // Esta consulta (que ya corregimos) devuelve una
-            // List<ReporteDTO> con 'idmonopatin', 'kilometros' y 'pausa: null'
             return repo.obtenerReporteSinPausa(inicio, fin);
         }
 
-        // 2. El stream().map(...) que tenías antes se elimina
-        //    porque el repositorio ya devuelve el DTO listo.
     }
 
 

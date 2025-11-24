@@ -44,7 +44,7 @@ public class UserService {
         user.setRol(dto.getRol());
         user.setTipo(dto.getTipo());
 
-        // 3. Encriptación (Como ya lo tenías)
+        // 3. Encriptación
         if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
             String passHasheada = PasswordUtils.hashPassword(dto.getPassword());
             user.setPassword(passHasheada);
@@ -56,7 +56,6 @@ public class UserService {
         repo.save(user);
     }
 
-    // ... el resto de tus métodos ...
 
 
 
@@ -72,7 +71,7 @@ public class UserService {
 
         List<User> usuarios = repo.findAllById(ids);
 
-        // Filtrar por rol correctamente
+        // Filtrar por rol
         List<User> usuariosFiltrados = usuarios.stream()
                 .filter(u -> u.getRol().equals(rolEnum))
                 .toList();
