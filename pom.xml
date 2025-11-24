@@ -7,7 +7,7 @@
     <groupId>org.example</groupId>
     <artifactId>Arquitecturas-TPE</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
+    <packaging>pom</packaging> <!-- TODO REVISAR !-->
     <modules>
         <module>microservicio-user</module>
         <module>microservicio-transporte</module>

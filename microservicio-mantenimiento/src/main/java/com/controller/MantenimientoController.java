@@ -29,7 +29,7 @@ public class MantenimientoController {
         return mantenimientoService.registrarMantenimiento(dto);
     }
     @DeleteMapping("/eliminar/{id}")
-    @PreAuthorize("hasRole('ADMINISTRADOR')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'MANTENIMIENTO')")
     public void eliminar(@PathVariable("id") Long id) {
         mantenimientoService.deleteMantenimiento(id);
     }
