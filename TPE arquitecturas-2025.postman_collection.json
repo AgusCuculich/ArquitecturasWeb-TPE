@@ -49,7 +49,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"username\": \"María\",\r\n  \"surname\": \"Fernández\",\r\n  \"password\":3213213213,\r\n  \"mobile\": 549114567890,\r\n  \"rol\": \"USUARIO\",\r\n  \"tipo\": \"ESTANDAR\"\r\n}",
+							"raw": "{\r\n  \"username\": \"María\",\r\n  \"surname\": \"Fernández\",\r\n  \"password\":1234,\r\n  \"mobile\": 549114567890,\r\n  \"rol\": \"USUARIO\",\r\n  \"tipo\": \"ESTANDAR\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -76,7 +76,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"username\": \"Jorge\",\r\n  \"surname\": \"López\",\r\n  \"password\":3213213213,\r\n  \"mobile\": 549115678901,\r\n  \"rol\": \"MANTENIMIENTO\",\r\n  \"tipo\": \"PREMIUM\"\r\n}",
+							"raw": "{\r\n  \"username\": \"Jorge\",\r\n  \"surname\": \"López\",\r\n  \"password\":1234,\r\n  \"mobile\": 549115678901,\r\n  \"rol\": \"MANTENIMIENTO\",\r\n  \"tipo\": \"PREMIUM\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -100,16 +100,22 @@
 					"name": "Asociar user 1 a account 1",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "localhost:8080/users/1/linkAccount/1",
+							"raw": "localhost:8080/users/6/linkAccount/1",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"users",
-								"1",
+								"6",
 								"linkAccount",
 								"1"
 							]
@@ -121,16 +127,22 @@
 					"name": "Asociar user 2 a account 1",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenEstandar}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "localhost:8080/users/2/linkAccount/1",
+							"raw": "localhost:8080/users/1/linkAccount/1",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"users",
-								"2",
+								"1",
 								"linkAccount",
 								"1"
 							]
@@ -147,7 +159,13 @@
 					"name": "1",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "  {\r\n    \"tipo\": \"MercadoPago\",\r\n    \"fecha_alta\": \"2025-01-10T00:00:00.000+00:00\",\r\n    \"saldo\": 25000.5\r\n  }",
@@ -432,7 +450,13 @@
 					"name": "1",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"price\": 2000,\r\n  \"startDate\": \"2025-11-01T00:00:00\",\r\n  \"endDate\": \"2025-11-15T23:59:59\"\r\n}",
@@ -497,7 +521,7 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJzb2Z0dGVrSldUIiwic3ViIjoiYWRtaW4iLCJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOSVNUUkFET1IiXSwiaWF0IjoxNzYzODIxNjI5LCJleHAiOjE3NjM4MjIyMjl9.ED9x7ZVgx6URm3ZZqMnV4zGhz7h74aX1t0euCAs6JmiUnBIDBntvADebaQiz2OJ-gPI_9-Z2xNm4X4zdpWKRqQ",
+										"value": "{{tokenAdmin}}",
 										"type": "text"
 									}
 								],
@@ -626,7 +650,13 @@
 							"name": "debug",
 							"request": {
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{tokenAdmin}}",
+										"type": "text"
+									}
+								],
 								"url": {
 									"raw": "localhost:8080/users/debug",
 									"host": [
@@ -638,6 +668,14 @@
 										"debug"
 									]
 								}
+							},
+							"response": []
+						},
+						{
+							"name": "getOthersUsuers",
+							"request": {
+								"method": "GET",
+								"header": []
 							},
 							"response": []
 						}
@@ -656,7 +694,7 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJzb2Z0dGVrSldUIiwic3ViIjoiYWRtaW4iLCJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOSVNUUkFET1IiXSwiaWF0IjoxNzYzODIyNTEwLCJleHAiOjE3NjM4MjMxMTB9.Bcea7ofZNXGOTaHnJd7NOBav9JgpG_trpSwGvdChJYXdlzcTsiGAbD-kqmEJqQ5WWeBWvw_S7Fof5ENZOxtF8g",
+										"value": "{{tokenAdmin}}",
 										"type": "text"
 									}
 								],
@@ -691,7 +729,7 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJzb2Z0dGVrSldUIiwic3ViIjoiYWRtaW4iLCJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOSVNUUkFET1IiXSwiaWF0IjoxNzYzODIyNTEwLCJleHAiOjE3NjM4MjMxMTB9.Bcea7ofZNXGOTaHnJd7NOBav9JgpG_trpSwGvdChJYXdlzcTsiGAbD-kqmEJqQ5WWeBWvw_S7Fof5ENZOxtF8g",
+										"value": "{{tokenAdmin}}",
 										"type": "text"
 									}
 								],
@@ -714,7 +752,13 @@
 							"name": "save",
 							"request": {
 								"method": "POST",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{tokenAdmin}}",
+										"type": "text"
+									}
+								],
 								"body": {
 									"mode": "raw",
 									"raw": "  {\r\n    \"tipo\": \"MercadoPago\",\r\n    \"fecha_alta\": \"2025-01-10T00:00:00.000+00:00\",\r\n    \"saldo\": 25000.5\r\n  }",
@@ -793,13 +837,140 @@
 					"name": "Login",
 					"item": [
 						{
-							"name": "Logear user",
+							"name": "LogearAdmin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// 1. Capturamos la respuesta del servidor\r",
+											"var jsonData = pm.response.json();\r",
+											"\r",
+											"if (jsonData.token) {\r",
+											"    // Guardamos el token completo (con el \"Bearer \" incluido)\r",
+											"    pm.environment.set(\"tokenAdmin\", jsonData.token);\r",
+											"    \r",
+											"    console.log(\"tokenAdmin actualizado con Bearer incluido.\");\r",
+											"\r",
+											"} else {\r",
+											"    console.log(\"No se encontró el token en la respuesta.\");\r",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
 							"request": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
 									"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"1234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/users/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "LogearEstandar",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json();\r",
+											"\r",
+											"if (jsonData.token) {\r",
+											"    // Guardamos el token completo\r",
+											"    pm.environment.set(\"tokenEstandar\", jsonData.token);\r",
+											"    \r",
+											"    console.log(\"tokenEstandar actualizado con Bearer incluido.\");\r",
+											"\r",
+											"} else {\r",
+											"    console.log(\"No se encontró el token en la respuesta.\");\r",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"María\",\r\n    \"password\": \"1234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/users/login",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "LogearMantenimiento",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json();\r",
+											"\r",
+											"if (jsonData.token) {\r",
+											"    // Guardamos el token completo\r",
+											"    pm.environment.set(\"tokenMantenimiento\", jsonData.token);\r",
+											"    \r",
+											"    console.log(\"tokenMantenimiento actualizado con Bearer incluido.\");\r",
+											"\r",
+											"} else {\r",
+											"    console.log(\"No se encontró el token en la respuesta.\");\r",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"Jorge\",\r\n    \"password\": \"1234\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -881,7 +1052,13 @@
 							"name": "debug",
 							"request": {
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{tokenAdmin}}",
+										"type": "text"
+									}
+								],
 								"url": {
 									"raw": "http://localhost:8080/rides/debug",
 									"protocol": "http",
@@ -955,7 +1132,13 @@
 							"name": "debug",
 							"request": {
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{tokenAdmin}}",
+										"type": "text"
+									}
+								],
 								"url": {
 									"raw": "localhost:8080/fees/debug",
 									"host": [
@@ -1094,7 +1277,13 @@
 					"name": "getMantenimientos",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "http://localhost:8080/mantenimientos/",
 							"protocol": "http",
@@ -1114,7 +1303,13 @@
 					"name": "registrarMonopatin",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"fecha_inicio\": \"2025-11-12\",\r\n  \"fecha_fin\": \"2025-11-13\",\r\n  \"monopatin_id\": 1,\r\n  \"encargado_id\": 1\r\n}",
@@ -1143,9 +1338,15 @@
 					"name": "eliminarMantenimiento",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenMantenimiento}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "http://localhost:8080/mantenimientos/eliminar/1",
+							"raw": "http://localhost:8080/mantenimientos/eliminar/4",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1154,7 +1355,7 @@
 							"path": [
 								"mantenimientos",
 								"eliminar",
-								"1"
+								"4"
 							]
 						}
 					},
@@ -1166,248 +1367,258 @@
 			"name": "microservicio-transporte",
 			"item": [
 				{
-					"name": "getMonopatin",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/monopatines/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"monopatines",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "cambiarMonopatinDeParada",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/monopatines/1/parada/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"monopatines",
-								"1",
-								"parada",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "getParada",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/paradas/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"paradas",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "elinimarMonopatin",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/monopatines/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"monopatines",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "actualizarEstadoMonopatin",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/monopatines/1/estado?estado=MANTENIMIENTO\n",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"monopatines",
-								"1",
-								"estado"
-							],
-							"query": [
-								{
-									"key": "estado",
-									"value": "MANTENIMIENTO\n"
+					"name": "monopatin",
+					"item": [
+						{
+							"name": "getMonopatin",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/monopatines/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"monopatines",
+										"1"
+									]
 								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "getParadas",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/paradas/",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"paradas",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "saveParada",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"gps\": 123456789\r\n}\r\n\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "http://localhost:8080/paradas",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"paradas"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "eliminarParada",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/paradas/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"paradas",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "saveMonopatin",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"parada_id\": 1,\r\n  \"gps\": 123456789,\r\n  \"estado\": \"DISPONIBLE\"\r\n}\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
+						{
+							"name": "elinimarMonopatin",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/monopatines/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"monopatines",
+										"1"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "http://localhost:8080/monopatines",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"monopatines"
-							]
+						{
+							"name": "actualizarEstadoMonopatin",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/monopatines/1/estado?estado=MANTENIMIENTO\n",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"monopatines",
+										"1",
+										"estado"
+									],
+									"query": [
+										{
+											"key": "estado",
+											"value": "MANTENIMIENTO\n"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "saveMonopatin",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"parada_id\": 1,\r\n  \"gps\": 123456789,\r\n  \"estado\": \"DISPONIBLE\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/monopatines",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"monopatines"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getMonopatines",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/monopatines",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"monopatines"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "debug",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/monopatines/debug",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"monopatines",
+										"debug"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "getMonopatines",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/monopatines",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"monopatines"
-							]
+					"name": "Parada",
+					"item": [
+						{
+							"name": "cambiarMonopatinDeParada",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/monopatines/1/parada/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"monopatines",
+										"1",
+										"parada",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getParada",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/paradas/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"paradas",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getParadas",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/paradas/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"paradas",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "saveParada",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"gps\": 123456789\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/paradas",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"paradas"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "eliminarParada",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/paradas/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"paradas",
+										"1"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "debug",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/monopatines/debug",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"monopatines",
-								"debug"
-							]
-						}
-					},
-					"response": []
+					]
 				}
 			]
 		},
@@ -1418,9 +1629,15 @@
 					"name": "Inciso b",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "localhost:8080/users/disable/2",
+							"raw": "localhost:8080/users/disable/6",
 							"host": [
 								"localhost"
 							],
@@ -1428,7 +1645,7 @@
 							"path": [
 								"users",
 								"disable",
-								"2"
+								"6"
 							]
 						}
 					},
@@ -1438,7 +1655,13 @@
 					"name": "Inciso c",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "localhost:8080/monopatines/stats?anio=2024&viajes=2",
 							"host": [
@@ -1467,7 +1690,13 @@
 					"name": "Inciso f",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"price\": 3000\r\n}",
@@ -1478,14 +1707,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/fees/1",
+							"raw": "localhost:8080/fees/692467dc3907443b6a898c6e",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"fees",
-								"1"
+								"692467dc3907443b6a898c6e"
 							]
 						}
 					},
@@ -1495,7 +1724,13 @@
 					"name": "Inciso h",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "localhost:8080/rides/scooterUse/1?startDate=2024-01-01&endDate=2024-12-25",
 							"host": [
@@ -1525,7 +1760,13 @@
 					"name": "Inciso e",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "http://localhost:8080/users/ranking?desde=2024-01-01&hasta=2024-11-11&rol=USUARIO",
 							"protocol": "http",
@@ -1559,7 +1800,13 @@
 					"name": "Inciso a",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "http://localhost:8080/monopatines/reporte?inicio=2024-01-01&fin=2024-11-12&incluirPausas=true",
 							"protocol": "http",
@@ -1593,7 +1840,13 @@
 					"name": "Inciso g",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "http://localhost:8080/monopatines/nearby?latitud=-34.603722&longitud=-58.381592&radio=500",
 							"protocol": "http",
@@ -1627,7 +1880,13 @@
 					"name": "Inciso d",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "localhost:8080/fees/facturacion?start=2024-02-01&end=2024-03-25",
 							"host": [
