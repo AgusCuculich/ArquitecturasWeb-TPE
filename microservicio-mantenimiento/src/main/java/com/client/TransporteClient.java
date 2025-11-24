@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 public class TransporteClient {
 
     private final RestTemplate restTemplate;
-    public TransporteClient(@Qualifier("restTemplate") RestTemplate restTemplate) {
+    public TransporteClient(@Qualifier("restTemplateMantenimiento") RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
