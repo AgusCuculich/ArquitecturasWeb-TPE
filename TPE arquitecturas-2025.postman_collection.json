@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "c6535c45-2365-458a-b5b8-632a93343b14",
+		"_postman_id": "0c613a18-eaa6-4769-9f6c-e6ec3673138d",
 		"name": "TPE arquitecturas-2025",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "49272331"
+		"_exporter_id": "36797172"
 	},
 	"item": [
 		{
@@ -1919,6 +1919,281 @@
 									"key": "end",
 									"value": "2024-03-25"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Prompts IA",
+			"item": [
+				{
+					"name": "Primer viaje registrado",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "Devolveme el primer viaje registrado en el sistema",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/ia/prompt",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"ia",
+								"prompt"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Usuarios \"PREMIUM\"",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "Devolveme aquellos usuarios de tipo \"PREMIUM\"",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/ia/prompt",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"ia",
+								"prompt"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tarifa de noviembre",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "Devolveme la tarifa correspondiente al mes de noviembre de 2025",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/ia/prompt",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"ia",
+								"prompt"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Busqueda por cercania",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "Dame monopatines cuya latitud este cerca de -34.0000 en un radio de 67 metros",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/ia/prompt",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"ia",
+								"prompt"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Primer monopatin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "Dame el primer monopatin",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/ia/prompt",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"ia",
+								"prompt"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Monopatines disponibles",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "Dame todos los monopatines cuyo estado sea DISPONIBLE",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/ia/prompt",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"ia",
+								"prompt"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAll paradas",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "Dame todas las paradas",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/ia/prompt",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"ia",
+								"prompt"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Primer parada registrada",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "Dame la primera parada registrada en el sistema",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/ia/prompt",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"ia",
+								"prompt"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllCuentas",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "Dame todas las cuentas",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/ia/prompt",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"ia",
+								"prompt"
 							]
 						}
 					},
